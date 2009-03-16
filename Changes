@@ -1,0 +1,6 @@
+Revision history for Perl extension Net::OpenSocial::Client.
+
+0.01  Mon Mar 16 10:15:03 2009
+	- original version; created by h2xs 1.23 with options
+		-XA Net::OpenSocial::Client
+

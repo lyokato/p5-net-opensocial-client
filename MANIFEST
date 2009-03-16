@@ -1,0 +1,6 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/Net-OpenSocial-Client.t
+lib/Net/OpenSocial/Client.pm
