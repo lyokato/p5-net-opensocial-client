@@ -5,7 +5,7 @@ use warnings;
 
 use base 'Exporter';
 
-our @EXPORTER = qw(PEOPLE GROUP ACTIVITY APPDATA);
+our @EXPORT_OK = qw(PEOPLE GROUP ACTIVITY APPDATA);
 
 use constant PEOPLE   => 'people';
 use constant GROUP    => 'groups';

@@ -2,6 +2,12 @@ package Net::OpenSocial::Client::Request;
 
 use Any::Moose;
 
+has 'id' => (
+    is       => 'ro',
+    isa      => 'Str',
+    required => 1,
+);
+
 has 'service' => (
     is       => 'ro',
     isa      => 'Str',
@@ -14,13 +20,53 @@ has 'operation' => (
     required => 1,
 );
 
+has 'user_id' => (
+    is      => 'ro',
+    isa     => 'Str',
+    default => '@me',
+);
+
+has 'group_id' => (
+    is      => 'ro',
+    isa     => 'Str',
+    default => '@self',
+);
+
 has 'params' => (
     is  => 'ro',
     isa => 'HashRef',
 );
 
+=pod
+my @REST_PARAMS = qw(
+    count
+    filterBy
+    filterOp
+    filterValue
+    format
+    fields
+    networkDistance
+    sortBy
+    sortOrder
+    startIndex
+    updatedSince
+);
+
+my @PARAMS = qw(
+    auth
+    userId
+    groupId
+    appId
+    activityIds
+    fields
+    count
+    statIndex
+    startPage
+);
+=cut
+
 has 'resource' => (
-    is => 'ro',
+    is  => 'ro',
     isa => 'Net::OpenSocial::Client::Resource',
 );
 
@@ -34,7 +80,7 @@ my %OP_METHOD_MAP = (
 sub rpc_service {
     my $self    = shift;
     my $service = $self->service;
-    $service = 'activities' if $service eq 'activity';
+    $service = 'activity' if $service eq 'activities';
     return $service;
 }
 

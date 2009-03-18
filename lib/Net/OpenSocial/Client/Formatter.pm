@@ -1,6 +1,6 @@
 package Net::OpenSocial::Client::Formatter;
 
-use Any::Moose 'Role';
+use Any::Moose '::Role';
 
 has 'content_type' => (
     is  => 'ro',

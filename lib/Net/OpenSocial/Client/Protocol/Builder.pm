@@ -2,8 +2,8 @@ package Net::OpenSocial::Client::Protocol::Builder;
 
 use Any::Moose;
 
-use Net::OpenSocial::Client::RequestBuilder::HMAC;
-use Net::OpenSocial::Client::RequestBuilder::ST;
+use Net::OpenSocial::Client::HTTPRequestBuilder::HMAC;
+use Net::OpenSocial::Client::HTTPRequestBuilder::ST;
 
 use Net::OpenSocial::Client::Protocol::REST;
 use Net::OpenSocial::Client::Protocol::RPC;
@@ -113,12 +113,12 @@ sub _build_request_builder {
         elsif ( $self->requestor ) {
             $args{requestor} = $self->requestor;
         }
-        return Net::OpenSocial::Client::RequestBuilder::HMAC->new(%args);
+        return Net::OpenSocial::Client::HTTPRequestBuilder::HMAC->new(%args);
     }
     elsif ( $self->auth_type eq ST ) {
         return $self->ERROR(q{})
             unless ( defined $self->st );
-        return Net::OpenSocial::Client::RequestBuilder::ST->new(
+        return Net::OpenSocial::Client::HTTPRequestBuilder::ST->new(
             st => $self->st );
     }
     return $self->ERROR(q{Unknown auth type.});

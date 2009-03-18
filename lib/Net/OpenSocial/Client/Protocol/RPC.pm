@@ -2,22 +2,20 @@ package Net::OpenSocial::Client::Protocol::RPC;
 
 use Any::Moose;
 extends 'Net::OpenSocial::Client::Protocol';
+with 'Net::OpenSocial::Client::ErrorHandler';
+use Net::OpenSocial::Client::ResultSet;
 
-use HTTP::Request;
-use bytes ();
+override 'execute' => sub {
+    my ( $self, $container, $requests ) = @_;
 
-sub execute {
-    my ( $self, $container ) = @_;
+    return $self->ERROR(q{This container doesn't support rpc endpoint.})
+        unless $container->rpc;
 
     my $url = sprintf( q{%s/%s}, $container->endpoint, $container->rpc );
     my $method = 'POST';
-    my $http_req    = HTTP::Request->new( $method => $url );
-    my $auth_params = $self->auth_method->params();
-    my $params      = { %$auth_params };
-    $self->auth_method->sign( $http_req, $url, $method, $params );
 
     my @obj;
-    for my $request ( @{ $self->_requests } ) {
+    for my $request (@$requests) {
         my $obj = {};
         $obj->{method}
             = sprintf( q{%s.%s}, $request->rpc_service, $request->operation );
@@ -26,22 +24,27 @@ sub execute {
         push( @obj, $obj );
     }
     my $content = $self->formatter->encode( @obj > 1 ? [@obj] : $obj[0] );
-    $http_req->header( 'Content-Type'   => $self->formatter->content_type );
-    $http_req->header( 'Content-Length' => bytes::length($content) );
-    $http_req->content($content);
 
+    my $http_req = $self->request_builder->build_request(
+        method       => $method,
+        url          => $url,
+        content_type => $self->formatter->content_type,
+        content      => $content,
+    );
     my $http_res = $self->agent->request($http_req);
     unless ( $http_res->is_success ) {
-
+        return $self->ERROR($http_res->status_line);
     }
     my $result = $self->formatter->decode( $http_res->content );
     unless ( ref $result eq 'ARRAY' ) {
         $result = [$result];
     }
-    $self->clear_requests();
+    my $result_set = Net::OpenSocial::Client::ResultSet->new;
+    for my $r ( $result ) {
+        $result_set->set_result( $r->id, $r );
+    }
     return $result;
-}
-
+};
 
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;

@@ -1,7 +1,6 @@
 package Net::OpenSocial::Client::Protocol;
 
 use Any::Moose;
-use Any::Moose 'X::AttributeHelpers';
 
 use LWP::UserAgent;
 
@@ -12,32 +11,23 @@ has 'formatter' => (
     # does => 'Net::OpenSocial::Client::Formatter',
 );
 
-has 'auth_method' => (
+has 'request_builder' => (
     is       => 'ro',
     required => 1,
 
-    # does => 'Net::OpenSocial::Client::AuthMethod',
+    # does => 'Net::OpenSocial::Client::HTTPRequestBuilder',
 );
 
 has 'agent' => (
     is       => 'ro',
     required => 1,
-    default  => sub { LWP::UserAgent->new },
-);
-
-has '_requests' => (
-    is        => 'ro',
-    isa       => 'ArrayRef[Net::OpenSocial::Client::Request]',
-    default   => sub { [] },
-    metaclass => 'Collection::Array',
-    provides  => {
-        empty => 'clear_requests',
-        push  => 'add_request',
+    default  => sub {
+        LWP::UserAgent->new;
     },
 );
 
 sub execute {
-    my ( $self, $container ) = @_;
+    my ( $self, $container, $requests ) = @_;
     die "abstract method";
 }
 
