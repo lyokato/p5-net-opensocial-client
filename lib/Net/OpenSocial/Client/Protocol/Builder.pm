@@ -91,16 +91,19 @@ sub _build_formatter {
         return Net::OpenSocial::Client::Formatter::XML->new;
     }
     elsif ( $self->format_type eq ATOM ) {
-        return $self->ERROR(q{})
+        return $self->ERROR(q{Atom format is not supported on RPC protocol.})
             if ( $self->protocol_type eq RPC );
         return Net::OpenSocial::Client::Formatter::Atom->new;
     }
+    return $self->ERROR(q{Unknown format type.});
 }
 
 sub _build_request_builder {
     my $self = shift;
     if ( $self->auth_type eq HMAC ) {
-        return $self->ERROR(q{})
+        return $self->ERROR(
+            q{When you set HMAC as auth_type, you should set both 'consumer_key' and 'consumer_secret'.}
+            )
             unless ( defined $self->consumer_key
             && defined $self->consumer_secret );
         my %args = (
@@ -116,8 +119,9 @@ sub _build_request_builder {
         return Net::OpenSocial::Client::HTTPRequestBuilder::HMAC->new(%args);
     }
     elsif ( $self->auth_type eq ST ) {
-        return $self->ERROR(q{})
-            unless ( defined $self->st );
+        return $self->ERROR(
+            q{When you set ST as auth_type, you should set parameter 'st' for security token value.}
+        ) unless ( defined $self->st );
         return Net::OpenSocial::Client::HTTPRequestBuilder::ST->new(
             st => $self->st );
     }

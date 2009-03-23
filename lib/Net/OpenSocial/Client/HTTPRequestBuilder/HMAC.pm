@@ -4,6 +4,7 @@ use Any::Moose;
 with 'Net::OpenSocial::Client::HTTPRequestBuilder';
 
 use OAuth::Lite::Consumer;
+use OAuth::Lite::Token;
 
 has 'consumer_secret' => (
     is       => 'ro',

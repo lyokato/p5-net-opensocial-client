@@ -4,10 +4,15 @@ use Any::Moose;
 use Any::Moose 'X::AttributeHelpers';
 use Net::OpenSocial::Client::Protocol::Builder;
 
+use Net::OpenSocial::Client::Request::GetPeople;
+use Net::OpenSocial::Client::Request::GetPerson;
+use Net::OpenSocial::Client::Request::GetFriends;
+
+with 'Net::OpenSocial::Client::ErrorHandler';
+
 has 'protocol' => (
-    is       => 'ro',
-    isa      => 'Net::OpenSocial::Client::Protocol',
-    required => 1,
+    is  => 'rw',
+    isa => 'Net::OpenSocial::Client::Protocol',
 );
 
 has 'container' => (
@@ -17,14 +22,11 @@ has 'container' => (
 );
 
 has '_requests' => (
-    is      => 'ro',
-    isa     => 'HashRef',
-    default => sub { +{} },
-    metaclass => 'Collection::Hash',
-    provides => {
-        clear => 'clear_requests', 
-        set   => 'add_request',
-    },
+    is        => 'ro',
+    isa       => 'ArrayRef',
+    default   => sub { [] },
+    metaclass => 'Collection::Array',
+    provides  => { clear => 'clear_requests', },
 );
 
 sub BUILD {
@@ -35,61 +37,70 @@ sub BUILD {
     delete $params->{protocol};
     delete $params->{container};
 
-    my $builder = Net::OpenSocial::Client::Protocol::Builder->new(%$params);
+    my $builder  = Net::OpenSocial::Client::Protocol::Builder->new(%$params);
     my $protocol = $builder->build_protocol()
         or die $builder->errstr;
 
     $self->protocol($protocol);
 }
 
-sub get_person {
-    my ( $self, $user_id, $group_id, $p_id, $option ) = @_;
-    my $people = $self->get_people( $user_id, $group_id, $p_id, $option );
-    return $people->first;
+sub add_request {
+    my ( $self, $id, $req ) = @_;
+    $req->id($id);
+    push( @{ $self->_requests }, $req );
 }
 
 sub get_people {
-    my ( $self, $user_id, $group_id, $p_id, $option ) = @_;
-    $user_id  ||= '@me';
-    $group_id ||= '@self';
-    my $req = Net::OpenSocial::Client::Request->new(
-        id        => '',
-        service   => 'people',
-        operation => 'get',
-        params    => {
-            user_id  => $user_id,
-            group_id => $group_id,
-        },
-    );
-    $self->protocol->add_request($req);
-    my $responses  = $self->protocol->execute( $self->container );
-    my $result     = $responses->[0];
-    my $collection = Net::OpenSocial::Client::Collection->new;
-    $collection->total_results( $result->{total_results} )
-        if exists $result->{total_results};
-    $collection->start_index( $result->{start_index} )
-        if exists $result->{start_index};
-    $collection->items_per_page( $result->{items_per_page} )
-        if exists $result->{items_per_page};
-        #$collection->add_resource($person);
-    return $collection;
+    my ( $self, $user_id, $group_id, $params ) = @_;
+    $self->clear_requests();
+    my $req_id = 'get_people';
+    my $req    = Net::OpenSocial::Client::Request::GetPeople->new( $user_id,
+        $group_id, $params );
+    $self->add_request( $req_id => $req );
+    my $result_set = $self->send() or return;
+    my $result = $result_set->get_result($req_id);
+    if ( $result->is_error ) {
+        return $self->ERROR( $result->message );
+    }
+    return $result->data;
 }
 
-sub get_groups {
-    my ( $self, $user_id, $option ) = @_;
-    $user_id ||= '@me';
+sub get_person {
+    my ( $self, $user_id ) = @_;
+    $self->clear_requests();
+    my $req_id = 'get_person';
+    my $req    = Net::OpenSocial::Client::Request::GetPerson->new($user_id);
+    $self->add_request( $req_id => $req );
+    my $result_set = $self->send() or return;
+    my $result = $result_set->get_result($req_id);
+    if ( $result->is_error ) {
+        return $self->ERROR( $result->message );
+    }
+    return $result->data;
 }
 
-sub get_activities {
-    my ( $self, $user_id, $group_id, $app_id, $option ) = @_;
-    $user_id  ||= '@me';
-    $group_id ||= '@self';
+sub get_friends {
+    my ( $self, $user_id, $params ) = @_;
+    $self->clear_requests();
+    my $req_id = 'get_people';
+    my $req    = Net::OpenSocial::Client::Request::GetFriends->new( $user_id,
+        $params );
+    $self->add_request( $req_id => $req );
+    my $result_set = $self->send() or return;
+    my $result = $result_set->get_result($req_id);
+    if ( $result->is_error ) {
+        return $self->ERROR( $result->message );
+    }
+    return $result->data;
 }
 
-sub get_appdata {
-    my ( $self, $user_id, $group_id, $app_id, $option ) = @_;
-    $user_id  ||= '@me';
-    $group_id ||= '@self';
+sub send {
+    my $self     = shift;
+    my @requests = @{ $self->_requests };
+    $self->clear_requests();
+    my $result_set = $self->protocol->execute( $self->container, \@requests )
+        or return $self->ERROR( $self->protocol->errstr );
+    return $result_set;
 }
 
 no Any::Moose;
@@ -114,18 +125,17 @@ __PACKAGE__->meta->make_immutable;
     );
 
     my $req1 = Net::OpenSocial::Client::Request->new(
-        id        => q{hoge},
         service   => PEOPLE,
         operation => GET,
         user_id   => '@me',
         group_id  => '@self',
     );
 
-    $client->add_request( $req1 );
-    $client->add_request( $req2 );
+    $client->add_request( req_id_1 => $req1 );
+    $client->add_request( req_id_2 => $req2 );
 
     my $result_set = $client->send();
-    my $res1 = $result_set->get_result('hoge');
+    my $res1 = $result_set->get_result('req_id_1');
 
     if ( $res1->is_error ) {
         $res1->code;

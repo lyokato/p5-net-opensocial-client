@@ -10,6 +10,7 @@ has '_errstr' => (
 sub ERROR {
     my ( $self, $message ) = @_;
     $self->_errstr($message);
+    return;
 }
 
 sub errstr {

@@ -3,7 +3,7 @@ package Net::OpenSocial::Client::Formatter::JSON;
 use Any::Moose;
 with 'Net::OpenSocial::Client::Formatter';
 
-use JSON::XS;
+use JSON;
 
 has '+name' => (
     is      => 'ro',
@@ -19,13 +19,13 @@ has '+content_type' => (
 
 sub encode {
     my ( $self, $obj ) = @_;
-    my $content = JSON::XS->new->encode($obj);
+    my $content = JSON::encode_json($obj);
     return $content;
 }
 
 sub decode {
     my ( $self, $content ) = @_;
-    my $obj = JSON::XS->new->decode($content);
+    my $obj = JSON::decode_json($content);
     return $obj;
 }
 

@@ -3,38 +3,36 @@ package Net::OpenSocial::Client::Request;
 use Any::Moose;
 
 has 'id' => (
-    is       => 'ro',
-    isa      => 'Str',
-    required => 1,
+    is  => 'rw',
+    isa => 'Str',
 );
 
 has 'service' => (
-    is       => 'ro',
-    isa      => 'Str',
-    required => 1,
+    is  => 'rw',
+    isa => 'Str',
 );
 
 has 'operation' => (
-    is       => 'ro',
-    isa      => 'Str',
-    required => 1,
+    is  => 'rw',
+    isa => 'Str',
 );
 
 has 'user_id' => (
-    is      => 'ro',
+    is      => 'rw',
     isa     => 'Str',
     default => '@me',
 );
 
 has 'group_id' => (
-    is      => 'ro',
+    is      => 'rw',
     isa     => 'Str',
     default => '@self',
 );
 
 has 'params' => (
-    is  => 'ro',
-    isa => 'HashRef',
+    is      => 'rw',
+    isa     => 'HashRef',
+    default => sub { +{} },
 );
 
 =pod
@@ -66,8 +64,9 @@ my @PARAMS = qw(
 =cut
 
 has 'resource' => (
-    is  => 'ro',
-    isa => 'Net::OpenSocial::Client::Resource',
+    is      => 'rw',
+    isa     => 'Net::OpenSocial::Client::Resource',
+    predict => 'has_resource',
 );
 
 my %OP_METHOD_MAP = (

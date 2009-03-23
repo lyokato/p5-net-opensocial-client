@@ -6,6 +6,7 @@ use Any::Moose 'X::AttributeHelpers';
 has 'results' => (
     is  => 'ro',
     isa => 'HashRef',
+    default => sub { +{} },
     metaclass => 'Collection::Hash',
     provides => {
         set => 'set_result',
@@ -16,5 +17,4 @@ has 'results' => (
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 1;
-
 

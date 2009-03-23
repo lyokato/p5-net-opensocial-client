@@ -3,20 +3,13 @@ package Net::OpenSocial::Client::Activity;
 use Any::Moose;
 extends 'Net::OpenSocial::Client::Resource';
 
+use Net::OpenSocial::Client::Type::Service qw(ACTIVITY);
 
-has 'app_id' => ();
-has 'body' => ();
-has 'body_id' => ();
-has 'external_id' => ();
-has 'id' => ();
-has 'media_items' => ();
-has 'posted_time' => ();
-has 'priority' => ();
-has 'template_params' => ();
-has 'title' => ();
-has 'title_id' => ();
-has 'url' => ();
-has 'user_id' => ();
+has '+service' => (
+    is      => 'ro',
+    isa     => 'Str',
+    default => ACTIVITY,
+);
 
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
