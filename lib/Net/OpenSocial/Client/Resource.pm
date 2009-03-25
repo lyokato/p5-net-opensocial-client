@@ -9,7 +9,7 @@ has 'service' => (
     required => 1,
 );
 
-has '_fields' => (
+has 'fields' => (
     is        => 'ro',
     isa       => 'HashRef',
     default   => sub { +{} },

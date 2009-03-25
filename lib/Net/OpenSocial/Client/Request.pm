@@ -10,23 +10,27 @@ has 'id' => (
 has 'service' => (
     is  => 'rw',
     isa => 'Str',
+    required => 1,
 );
 
 has 'operation' => (
     is  => 'rw',
     isa => 'Str',
+    required => 1,
 );
 
 has 'user_id' => (
     is      => 'rw',
     isa     => 'Str',
     default => '@me',
+    required => 1,
 );
 
 has 'group_id' => (
     is      => 'rw',
     isa     => 'Str',
     default => '@self',
+    required => 1,
 );
 
 has 'params' => (
@@ -34,34 +38,6 @@ has 'params' => (
     isa     => 'HashRef',
     default => sub { +{} },
 );
-
-=pod
-my @REST_PARAMS = qw(
-    count
-    filterBy
-    filterOp
-    filterValue
-    format
-    fields
-    networkDistance
-    sortBy
-    sortOrder
-    startIndex
-    updatedSince
-);
-
-my @PARAMS = qw(
-    auth
-    userId
-    groupId
-    appId
-    activityIds
-    fields
-    count
-    statIndex
-    startPage
-);
-=cut
 
 has 'resource' => (
     is      => 'rw',

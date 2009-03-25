@@ -13,9 +13,6 @@ use Net::OpenSocial::Client::Type::Operation qw(CREATE UPDATE);
 override 'execute' => sub {
     my ( $self, $container, $requests ) = @_;
 
-    #return $self->ERROR(q{This container doesn't support rpc endpoint.})
-    #    unless $container->rpc;
-
     my $url = sprintf( q{%s/%s}, $container->endpoint, $container->rpc );
     my $method = 'POST';
 
@@ -28,6 +25,8 @@ override 'execute' => sub {
         $obj->{method} = sprintf( q{%s.%s}, $service, $operation );
         $obj->{id}     = $request->id;
         $obj->{params} = $request->params;
+        $obj->{params}{userId}  = $request->user_id;
+        $obj->{params}{groupId} = $request->group_id;
         if (   $operation eq CREATE
             || $operation eq UPDATE )
         {
@@ -36,7 +35,7 @@ override 'execute' => sub {
                 #ERROR
             }
             my $resource = $request->resource;
-            $obj->{params}{$service} = $resource->to_hash;
+            $obj->{params}{$service} = $resource->fields;
         }
         push( @obj, $obj );
         $id_service_map{ $request->id } = $service;
@@ -49,6 +48,7 @@ override 'execute' => sub {
         content_type => $self->formatter->content_type,
         content      => $content,
     );
+
     my $http_res = $self->agent->request($http_req);
 
     my $result_set = Net::OpenSocial::Client::ResultSet->new;
@@ -64,17 +64,7 @@ override 'execute' => sub {
         return $result_set;
     }
     my $results = $self->formatter->decode( $http_res->content );
-    if ( exists $results->{code} ) {
-        for my $request (@$requests) {
-            my $error = Net::OpenSocial::Client::Result->new(
-                is_error => 1,
-                code     => $results->{code},
-                message  => $results->{message},
-            );
-            $result_set->set_result( $request->id => $error );
-        }
-        return $result_set;
-    }
+
     unless ( ref $results eq 'ARRAY' ) {
         $results = [$results];
     }
@@ -89,14 +79,16 @@ override 'execute' => sub {
 
 sub _build_result {
     my ( $self, $service, $obj ) = @_;
-    if ( $obj->{error} ) {
+    $obj ||= {};
+    if ( exists $obj->{error} ) {
         return Net::OpenSocial::Client::Result->new(
             is_error => 1,
             %{ $obj->{error} }
         );
     }
     else {
-        my $result = $obj->{result} || {};
+        #my $result = exists $obj->{result} ? $obj->{result} : $obj;
+        my $result = $obj->{data} || {};
         if ( scalar( keys %$result ) == 0 ) {
 
             # VOID result

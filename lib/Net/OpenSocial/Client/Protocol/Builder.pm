@@ -87,14 +87,15 @@ sub _build_formatter {
     if ( $self->format_type eq JSON ) {
         return Net::OpenSocial::Client::Formatter::JSON->new;
     }
-    elsif ( $self->format_type eq XML ) {
-        return Net::OpenSocial::Client::Formatter::XML->new;
-    }
-    elsif ( $self->format_type eq ATOM ) {
-        return $self->ERROR(q{Atom format is not supported on RPC protocol.})
-            if ( $self->protocol_type eq RPC );
-        return Net::OpenSocial::Client::Formatter::Atom->new;
-    }
+    # XXX: not support yet
+    #elsif ( $self->format_type eq XML ) {
+    #    return Net::OpenSocial::Client::Formatter::XML->new;
+    #}
+    #elsif ( $self->format_type eq ATOM ) {
+    #    return $self->ERROR(q{Atom format is not supported on RPC protocol.})
+    #        if ( $self->protocol_type eq RPC );
+    #    return Net::OpenSocial::Client::Formatter::Atom->new;
+    #}
     return $self->ERROR(q{Unknown format type.});
 }
 

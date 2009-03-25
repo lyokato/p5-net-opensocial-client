@@ -12,19 +12,19 @@ sub gen_resource {
     my ( $class, $service, $data ) = @_;
     if ( $service eq PEOPLE ) {
         return Net::OpenSocial::Client::Resource::Person->new(
-            _fields => $data );
+            fields => $data );
     }
     elsif ( $service eq GROUP ) {
         return Net::OpenSocial::Client::Resource::Group->new(
-            _fields => $data );
+            fields => $data );
     }
     elsif ( $service eq ACTIVITY ) {
         return Net::OpenSocial::Client::Resource::Activity->new(
-            _fields => $data );
+            fields => $data );
     }
     elsif ( $service eq APPDATA ) {
         return Net::OpenSocial::Client::Resource::AppData->new(
-            _fields => $data );
+            fields => $data );
     }
 }
 

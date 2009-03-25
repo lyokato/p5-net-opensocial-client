@@ -8,11 +8,13 @@ use Net::OpenSocial::Client::Type::Operation qw(GET);
 
 sub BUILDARGS {
     my ( $self, $user_id, $params ) = @_;
-    $self->service(PEOPLE);
-    $self->operation(GET);
-    $self->user_id( $user_id || '@me' );
-    $self->group_id('@friends');
-    $self->params( $params || {} );
+    return {
+        service   => PEOPLE,
+        operation => GET,
+        user_id   => $user_id||'@me',
+        group_id  => '@friends',
+        params    => $params||{},
+    };
 }
 
 no Any::Moose;

@@ -12,9 +12,6 @@ use Net::OpenSocial::Client::Collection;
 override 'execute' => sub {
     my ( $self, $container, $requests ) = @_;
 
-    #return $self->ERROR(q{This container doesn't support rest endpoint.})
-    #    unless $container->rest;
-
     my $result = Net::OpenSocial::Client::ResultSet->new;
     for my $request (@$requests) {
 
@@ -32,6 +29,8 @@ override 'execute' => sub {
             )
         );
 
+        $params{format} = $self->formatter->name;
+
         my %build_args = (
             method => $method,
             url    => $url,
@@ -45,11 +44,14 @@ override 'execute' => sub {
             my $resource = $request->resource;
             $build_args{content_type} = $self->formatter->content_type;
             $build_args{content}
-                = $self->formatter->encode( $resource->to_hash );
+                = $self->formatter->encode( $resource->fields );
         }
 
         my $http_req = $self->request_builder->build_request(%build_args);
+        use Data::Dump qw(dump);
+        warn dump($http_req);
         my $http_res = $self->agent->request($http_req);
+        warn dump($http_res);
 
         unless ( $http_res->is_success ) {
             my $error = Net::OpenSocial::Client::Result->new(
@@ -69,7 +71,8 @@ override 'execute' => sub {
 
 sub _build_result {
     my ( $self, $service, $obj ) = @_;
-    my $result = $obj->{response} || {};
+    $obj ||= {};
+    my $result = exists $obj->{response} ? $obj->{response} : $obj;
     if ( exists $result->{entry} ) {
         my $entries = $result->{entry};
         $entries = [$entries] unless ref $entries eq 'ARRAY';

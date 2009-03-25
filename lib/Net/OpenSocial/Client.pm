@@ -11,7 +11,7 @@ use Net::OpenSocial::Client::Request::GetFriends;
 with 'Net::OpenSocial::Client::ErrorHandler';
 
 has 'protocol' => (
-    is  => 'rw',
+    is  => 'ro',
     isa => 'Net::OpenSocial::Client::Protocol',
 );
 
@@ -29,19 +29,17 @@ has '_requests' => (
     provides  => { clear => 'clear_requests', },
 );
 
-sub BUILD {
-    my ( $self, $params ) = @_;
-
-    return if $self->protocol;
-
-    delete $params->{protocol};
-    delete $params->{container};
-
-    my $builder  = Net::OpenSocial::Client::Protocol::Builder->new(%$params);
-    my $protocol = $builder->build_protocol()
-        or die $builder->errstr;
-
-    $self->protocol($protocol);
+sub BUILDARGS {
+    my ( $self, %args ) = @_;
+    my $params = {};
+    $params->{container} = delete $args{container};
+    unless (exists $args{protocol}) {
+        my $builder  = Net::OpenSocial::Client::Protocol::Builder->new(%args);
+        my $protocol = $builder->build_protocol()
+            or die $builder->errstr;
+        $params->{protocol} = $protocol;
+    }
+    return $params;
 }
 
 sub add_request {
