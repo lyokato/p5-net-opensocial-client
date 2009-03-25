@@ -9,8 +9,9 @@ use Net::OpenSocial::Client::Protocol::REST;
 use Net::OpenSocial::Client::Protocol::RPC;
 
 use Net::OpenSocial::Client::Formatter::JSON;
-use Net::OpenSocial::Client::Formatter::XML;
-use Net::OpenSocial::Client::Formatter::Atom;
+
+#use Net::OpenSocial::Client::Formatter::XML;
+#use Net::OpenSocial::Client::Formatter::Atom;
 
 use Net::OpenSocial::Client::Type::Protocol qw(REST RPC);
 use Net::OpenSocial::Client::Type::Auth qw(HMAC ST);
@@ -87,6 +88,7 @@ sub _build_formatter {
     if ( $self->format_type eq JSON ) {
         return Net::OpenSocial::Client::Formatter::JSON->new;
     }
+
     # XXX: not support yet
     #elsif ( $self->format_type eq XML ) {
     #    return Net::OpenSocial::Client::Formatter::XML->new;

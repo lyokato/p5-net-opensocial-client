@@ -46,19 +46,18 @@ sub build_request {
     $params->{xoauth_requestor_id} = $self->requestor
         if $self->requestor;
 
-
     my $consumer = OAuth::Lite::Consumer->new(
         consumer_key    => $self->consumer_key,
         consumer_secret => $self->consumer_secret,
         auth_method     => URL_QUERY,
     );
-    my $query = $consumer->gen_auth_query($method, $url, $token, $params);
+    my $query = $consumer->gen_auth_query( $method, $url, $token, $params );
     $url = sprintf q{%s?%s}, $url, $query;
 
     my $headers = HTTP::Headers->new;
     if ( $method eq 'POST' || $method eq 'PUT' ) {
-        $headers->header('Content-Type' => $content_type);
-        $headers->header('Content-Length' => bytes::length($content) );
+        $headers->header( 'Content-Type'   => $content_type );
+        $headers->header( 'Content-Length' => bytes::length($content) );
     }
 
     my $http_req = HTTP::Request->new( $method, $url, $headers, $content );

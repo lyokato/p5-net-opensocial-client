@@ -33,7 +33,7 @@ sub BUILDARGS {
     my ( $self, %args ) = @_;
     my $params = {};
     $params->{container} = delete $args{container};
-    unless (exists $args{protocol}) {
+    unless ( exists $args{protocol} ) {
         my $builder  = Net::OpenSocial::Client::Protocol::Builder->new(%args);
         my $protocol = $builder->build_protocol()
             or die $builder->errstr;

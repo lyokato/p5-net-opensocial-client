@@ -8,28 +8,28 @@ has 'id' => (
 );
 
 has 'service' => (
-    is  => 'rw',
-    isa => 'Str',
+    is       => 'rw',
+    isa      => 'Str',
     required => 1,
 );
 
 has 'operation' => (
-    is  => 'rw',
-    isa => 'Str',
+    is       => 'rw',
+    isa      => 'Str',
     required => 1,
 );
 
 has 'user_id' => (
-    is      => 'rw',
-    isa     => 'Str',
-    default => '@me',
+    is       => 'rw',
+    isa      => 'Str',
+    default  => '@me',
     required => 1,
 );
 
 has 'group_id' => (
-    is      => 'rw',
-    isa     => 'Str',
-    default => '@self',
+    is       => 'rw',
+    isa      => 'Str',
+    default  => '@self',
     required => 1,
 );
 

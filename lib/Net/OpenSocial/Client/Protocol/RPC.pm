@@ -22,14 +22,15 @@ override 'execute' => sub {
         my $service   = $request->rpc_service;
         my $operation = $request->operation;
         my $obj       = {};
-        $obj->{method} = sprintf( q{%s.%s}, $service, $operation );
-        $obj->{id}     = $request->id;
-        $obj->{params} = $request->params;
+        $obj->{method}          = sprintf( q{%s.%s}, $service, $operation );
+        $obj->{id}              = $request->id;
+        $obj->{params}          = $request->params;
         $obj->{params}{userId}  = $request->user_id;
         $obj->{params}{groupId} = $request->group_id;
         if (   $operation eq CREATE
             || $operation eq UPDATE )
         {
+
             unless ( $request->has_resource ) {
 
                 #ERROR
@@ -69,7 +70,8 @@ override 'execute' => sub {
         $results = [$results];
     }
     for my $result (@$results) {
-        my $res_id  = exists $result->{id} ? $result->{id} : $requests->[0]->id;
+        my $res_id
+            = exists $result->{id} ? $result->{id} : $requests->[0]->id;
         my $service = $id_service_map{$res_id};
         $result_set->set_result(
             $res_id => $self->_build_result( $service, $result ) );
@@ -87,6 +89,7 @@ sub _build_result {
         );
     }
     else {
+
         #my $result = exists $obj->{result} ? $obj->{result} : $obj;
         my $result = $obj->{data} || {};
         if ( scalar( keys %$result ) == 0 ) {
@@ -104,7 +107,8 @@ sub _build_result {
                 $coll->items_per_page( $result->{itemsPerPage} )
                     if exists $result->{itemsPerPage};
                 my $list = $result->{list};
-                unless (ref $list eq 'ARRAY') {
+                unless ( ref $list eq 'ARRAY' ) {
+
                     # invalid response format
                 }
                 for my $item ( @{ $result->{list} } ) {
