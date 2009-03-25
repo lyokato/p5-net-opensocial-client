@@ -20,7 +20,7 @@ has 'total_results' => (
     default => 0,
 );
 
-has '_items' => (
+has 'items' => (
     is        => 'ro',
     isa       => 'ArrayRef[Net::OpenSocial::Client::Resource]',
     default   => sub { [] },

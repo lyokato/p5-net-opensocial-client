@@ -48,6 +48,15 @@ sub add_request {
     push( @{ $self->_requests }, $req );
 }
 
+sub send {
+    my $self     = shift;
+    my @requests = @{ $self->_requests };
+    $self->clear_requests();
+    my $result_set = $self->protocol->execute( $self->container, \@requests )
+        or return $self->ERROR( $self->protocol->errstr );
+    return $result_set;
+}
+
 sub get_people {
     my ( $self, $user_id, $group_id, $params ) = @_;
     $self->clear_requests();
@@ -80,7 +89,7 @@ sub get_person {
 sub get_friends {
     my ( $self, $user_id, $params ) = @_;
     $self->clear_requests();
-    my $req_id = 'get_people';
+    my $req_id = 'get_friends';
     my $req    = Net::OpenSocial::Client::Request::GetFriends->new( $user_id,
         $params );
     $self->add_request( $req_id => $req );
@@ -90,15 +99,6 @@ sub get_friends {
         return $self->ERROR( $result->message );
     }
     return $result->data;
-}
-
-sub send {
-    my $self     = shift;
-    my @requests = @{ $self->_requests };
-    $self->clear_requests();
-    my $result_set = $self->protocol->execute( $self->container, \@requests )
-        or return $self->ERROR( $self->protocol->errstr );
-    return $result_set;
 }
 
 no Any::Moose;
