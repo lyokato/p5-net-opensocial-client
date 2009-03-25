@@ -8,6 +8,7 @@ use OAuth::Lite::AuthMethod qw(URL_QUERY);
 use OAuth::Lite::Token;
 use HTTP::Headers;
 use HTTP::Request;
+use bytes ();
 
 has 'consumer_secret' => (
     is       => 'ro',
@@ -61,20 +62,6 @@ sub build_request {
     }
 
     my $http_req = HTTP::Request->new( $method, $url, $headers, $content );
-
-=pod
-    my %oauth_args = (
-        method => $method,
-        url    => $url,
-    );
-    $oauth_args{token}   = $self->token if $self->token;
-    $oauth_args{content} = $content     if $content;
-    $oauth_args{headers} = [ 'Content-Type' => $content_type ]
-        if $content_type;
-
-    $oauth_args{params} = $params;
-    my $http_req = $consumer->gen_oauth_request(%oauth_args);
-=cut
 
     return $http_req;
 }
