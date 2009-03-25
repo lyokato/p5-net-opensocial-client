@@ -48,10 +48,7 @@ override 'execute' => sub {
         }
 
         my $http_req = $self->request_builder->build_request(%build_args);
-        use Data::Dump qw(dump);
-        warn dump($http_req);
         my $http_res = $self->agent->request($http_req);
-        warn dump($http_res);
 
         unless ( $http_res->is_success ) {
             my $error = Net::OpenSocial::Client::Result->new(
