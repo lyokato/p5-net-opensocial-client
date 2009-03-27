@@ -18,7 +18,4 @@ sub errstr {
     return $self->_errstr;
 }
 
-
 1;
-
-

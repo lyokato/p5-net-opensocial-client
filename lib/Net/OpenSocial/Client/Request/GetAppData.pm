@@ -1,19 +1,21 @@
-package Net::OpenSocial::Client::Request::GetPeople;
+package Net::OpenSocial::Client::Request::GetAppData;
 
 use Any::Moose;
 extends 'Net::OpenSocial::Client::Request';
 
-use Net::OpenSocial::Client::Type::Service qw(PEOPLE);
+use Net::OpenSocial::Client::Type::Service qw(APPDATA);
 use Net::OpenSocial::Client::Type::Operation qw(GET);
 
 sub BUILDARGS {
-    my ( $self, $user_id, $group_id, $params ) = @_;
+    my ( $self, $user_id, $group_id, $app_id, $params ) = @_;
+    $params ||= {};
+    $params->{appId} = $app_id if $app_id;
     return {
-        service   => PEOPLE,
+        service   => APPDATA,
         operation => GET,
         user_id   => $user_id || '@me',
         group_id  => $group_id || '@self',
-        params    => $params || {},
+        params    => $params,
     };
 }
 

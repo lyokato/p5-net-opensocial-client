@@ -62,6 +62,11 @@ has 'st' => (
     isa => 'Str',
 );
 
+has 'agent' => (
+    is      => 'ro',
+    default => sub { LWP::UserAgent->new },
+);
+
 sub build_protocol {
     my $self            = shift;
     my $request_builder = $self->_build_request_builder()
@@ -72,12 +77,14 @@ sub build_protocol {
         return Net::OpenSocial::Client::Protocol::REST->new(
             request_builder => $request_builder,
             formatter       => $formatter,
+            agent           => $self->agent,
         );
     }
     elsif ( $self->protocol_type eq RPC ) {
         return Net::OpenSocial::Client::Protocol::RPC->new(
             request_builder => $request_builder,
             formatter       => $formatter,
+            agent           => $self->agent,
         );
     }
     return $self->ERROR(q{Unknown protocol type.});

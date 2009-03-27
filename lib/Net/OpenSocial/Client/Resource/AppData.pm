@@ -1,4 +1,4 @@
-package Net::OpenSocial::Client::AppData;
+package Net::OpenSocial::Client::Resource::AppData;
 
 use Any::Moose;
 extends 'Net::OpenSocial::Client::Resource';

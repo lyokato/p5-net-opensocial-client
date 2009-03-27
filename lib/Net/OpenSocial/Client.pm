@@ -7,6 +7,10 @@ use Net::OpenSocial::Client::Protocol::Builder;
 use Net::OpenSocial::Client::Request::GetPeople;
 use Net::OpenSocial::Client::Request::GetPerson;
 use Net::OpenSocial::Client::Request::GetFriends;
+use Net::OpenSocial::Client::Request::GetPersonAppData;
+use Net::OpenSocial::Client::Request::GetFriendsAppData;
+
+our @DEFAULT_PROTOCOL_VERSION = q{0.8.1};
 
 with 'Net::OpenSocial::Client::ErrorHandler';
 
@@ -93,6 +97,37 @@ sub get_friends {
     my $req    = Net::OpenSocial::Client::Request::GetFriends->new( $user_id,
         $params );
     $self->add_request( $req_id => $req );
+    my $result_set = $self->send() or return;
+    my $result = $result_set->get_result($req_id);
+    if ( $result->is_error ) {
+        return $self->ERROR( $result->message );
+    }
+    return $result->data;
+}
+
+sub get_person_appdata {
+    my ( $self, $user_id, $params ) = @_;
+    $self->clear_requests();
+    my $req_id = 'get_person_appdata';
+    my $req
+        = Net::OpenSocial::Client::Request::GetPersonAppData->new( $user_id,
+        '@app', $params );
+    $self->add_request( $req_id => $req );
+    my $result_set = $self->send() or return;
+    my $result = $result_set->get_result($req_id);
+    if ( $result->is_error ) {
+        return $self->ERROR( $result->message );
+    }
+    return $result->data;
+}
+
+sub get_friends_appdata {
+    my ( $self, $user_id, $params ) = @_;
+    $self->clear_requests();
+    my $req_id = '';
+    my $req
+        = Net::OpenSocial::Client::Request::GetFriendsAppData->new( $user_id,
+        '@app', $params );
     my $result_set = $self->send() or return;
     my $result = $result_set->get_result($req_id);
     if ( $result->is_error ) {

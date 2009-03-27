@@ -1,4 +1,4 @@
-package Net::OpenSocial::Client::Activity;
+package Net::OpenSocial::Client::Resource::Activity;
 
 use Any::Moose;
 extends 'Net::OpenSocial::Client::Resource';

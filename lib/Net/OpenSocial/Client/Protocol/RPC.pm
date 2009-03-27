@@ -114,13 +114,13 @@ sub _build_result {
                 for my $item ( @{ $result->{list} } ) {
                     my $resource = Net::OpenSocial::Client::Resource::Factory
                         ->gen_resource( $service, $item );
-                    $coll->add_resource($resource);
+                    $coll->add_item($resource);
                 }
             }
             else {
                 my $resource = Net::OpenSocial::Client::Resource::Factory
                     ->gen_resource( $service, $result );
-                $coll->add_resource($resource);
+                $coll->add_item($resource);
             }
             return Net::OpenSocial::Client::Result->new( data => $coll );
         }

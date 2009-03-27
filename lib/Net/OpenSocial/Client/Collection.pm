@@ -28,7 +28,7 @@ has 'items' => (
     provides  => {
         count  => 'count',
         first  => 'first',
-        'push' => 'add_resource',
+        'push' => 'add_item',
     },
 );
 

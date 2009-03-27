@@ -39,7 +39,7 @@ override 'execute' => sub {
 
         if ( $method eq 'POST' || $method eq 'PUT' ) {
             unless ( $request->has_resource ) {
-                return $self->ERROR(q{});
+                return $self->ERROR(q{No resource data found.});
             }
             my $resource = $request->resource;
             $build_args{content_type} = $self->formatter->content_type;
@@ -84,7 +84,7 @@ sub _build_result {
             my $resource
                 = Net::OpenSocial::Client::Resource::Factory->gen_resource(
                 $service, $entry );
-            $coll->add_resource($resource);
+            $coll->add_item($resource);
         }
         return Net::OpenSocial::Client::Result->new( data => $coll );
     }
