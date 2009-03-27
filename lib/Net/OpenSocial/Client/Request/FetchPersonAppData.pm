@@ -1,4 +1,4 @@
-package Net::OpenSocial::Client::Request::GetPersonAppData;
+package Net::OpenSocial::Client::Request::FetchPersonAppData;
 
 use Any::Moose;
 extends 'Net::OpenSocial::Client::Request';

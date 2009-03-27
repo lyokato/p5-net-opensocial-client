@@ -7,10 +7,12 @@ name 'Net-OpenSocial-Client';
 all_from 'lib/Net/OpenSocial/Client.pm';
 
 requires(
-    'Any::Moose'    => '0.06',
-    'OAuth::Lite'   => '1.14',
-    'HTTP::Request' => 0,
-    'JSON'          => '2.14',
+    'Any::Moose'               => '0.06',
+    'OAuth::Lite'              => '1.14',
+    'HTTP::Request'            => 0,
+    'JSON'                     => '2.14',
+    'Mouse'                    => 0,
+    'MouseX::AttributeHelpers' => 0,
 );
 
 tests('t/*.t t/*/*.t');

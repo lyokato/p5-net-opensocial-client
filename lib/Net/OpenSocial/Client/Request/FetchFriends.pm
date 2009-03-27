@@ -1,4 +1,4 @@
-package Net::OpenSocial::Client::Request::GetPerson;
+package Net::OpenSocial::Client::Request::FetchFriends;
 
 use Any::Moose;
 extends 'Net::OpenSocial::Client::Request';
@@ -12,7 +12,7 @@ sub BUILDARGS {
         service   => PEOPLE,
         operation => GET,
         user_id   => $user_id||'@me',
-        group_id  => '@self',
+        group_id  => '@friends',
         params    => $params||{},
     };
 }

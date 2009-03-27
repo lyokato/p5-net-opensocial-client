@@ -174,7 +174,7 @@ __PACKAGE__->meta->make_immutable;
         $res1->code;
         $res1->message;
     } else {
-        my $collection = $res1->resources;
+        my $collection = $res1->data;
         for my $person ( @{ $collection->items } ) {
             say $person->name;
         }

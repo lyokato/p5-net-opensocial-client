@@ -1,9 +1,9 @@
-package Net::OpenSocial::Client::Request::GetFriendsAppData;
+package Net::OpenSocial::Client::Request::FetchFriendsActivity;
 
 use Any::Moose;
 extends 'Net::OpenSocial::Client::Request';
 
-use Net::OpenSocial::Client::Type::Service qw(APPDATA);
+use Net::OpenSocial::Client::Type::Service qw(ACTIVITY);
 use Net::OpenSocial::Client::Type::Operation qw(GET);
 
 sub BUILDARGS {
@@ -11,9 +11,9 @@ sub BUILDARGS {
     $params ||= {};
     $params->{appId} = $app_id if $app_id;
     return {
-        service   => APPDATA,
+        service   => ACTIVITY,
         operation => GET,
-        user_id   => $user_id || '@me',
+        user_id   => $user_id||'@me',
         group_id  => '@friends',
         params    => $params,
     };

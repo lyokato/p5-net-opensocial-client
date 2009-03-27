@@ -92,6 +92,7 @@ sub _build_result {
 
         #my $result = exists $obj->{result} ? $obj->{result} : $obj;
         my $result = $obj->{data} || {};
+        #if ( ( $operation eq CREATE || $operation eq UPDATE ) && scalar( keys %$result ) == 0 ) {
         if ( scalar( keys %$result ) == 0 ) {
 
             # VOID result
