@@ -4,11 +4,11 @@ use Any::Moose;
 use Any::Moose 'X::AttributeHelpers';
 use Net::OpenSocial::Client::Protocol::Builder;
 
-use Net::OpenSocial::Client::Request::GetPeople;
-use Net::OpenSocial::Client::Request::GetPerson;
-use Net::OpenSocial::Client::Request::GetFriends;
-use Net::OpenSocial::Client::Request::GetPersonAppData;
-use Net::OpenSocial::Client::Request::GetFriendsAppData;
+use Net::OpenSocial::Client::Request::FetchPeople;
+use Net::OpenSocial::Client::Request::FetchPerson;
+use Net::OpenSocial::Client::Request::FetchFriends;
+use Net::OpenSocial::Client::Request::FetchPersonAppData;
+use Net::OpenSocial::Client::Request::FetchFriendsAppData;
 
 our @DEFAULT_PROTOCOL_VERSION = q{0.8.1};
 
@@ -65,7 +65,7 @@ sub get_people {
     my ( $self, $user_id, $group_id, $params ) = @_;
     $self->clear_requests();
     my $req_id = 'get_people';
-    my $req    = Net::OpenSocial::Client::Request::GetPeople->new( $user_id,
+    my $req    = Net::OpenSocial::Client::Request::FetchPeople->new( $user_id,
         $group_id, $params );
     $self->add_request( $req_id => $req );
     my $result_set = $self->send() or return;
@@ -80,7 +80,7 @@ sub get_person {
     my ( $self, $user_id ) = @_;
     $self->clear_requests();
     my $req_id = 'get_person';
-    my $req    = Net::OpenSocial::Client::Request::GetPerson->new($user_id);
+    my $req    = Net::OpenSocial::Client::Request::FetchPerson->new($user_id);
     $self->add_request( $req_id => $req );
     my $result_set = $self->send() or return;
     my $result = $result_set->get_result($req_id);
@@ -94,7 +94,7 @@ sub get_friends {
     my ( $self, $user_id, $params ) = @_;
     $self->clear_requests();
     my $req_id = 'get_friends';
-    my $req    = Net::OpenSocial::Client::Request::GetFriends->new( $user_id,
+    my $req = Net::OpenSocial::Client::Request::FetchFriends->new( $user_id,
         $params );
     $self->add_request( $req_id => $req );
     my $result_set = $self->send() or return;
@@ -110,7 +110,7 @@ sub get_person_appdata {
     $self->clear_requests();
     my $req_id = 'get_person_appdata';
     my $req
-        = Net::OpenSocial::Client::Request::GetPersonAppData->new( $user_id,
+        = Net::OpenSocial::Client::Request::FetchPersonAppData->new( $user_id,
         '@app', $params );
     $self->add_request( $req_id => $req );
     my $result_set = $self->send() or return;
@@ -124,10 +124,9 @@ sub get_person_appdata {
 sub get_friends_appdata {
     my ( $self, $user_id, $params ) = @_;
     $self->clear_requests();
-    my $req_id = '';
-    my $req
-        = Net::OpenSocial::Client::Request::GetFriendsAppData->new( $user_id,
-        '@app', $params );
+    my $req_id = 'get_friens_appdata';
+    my $req    = Net::OpenSocial::Client::Request::FetchFriendsAppData->new(
+        $user_id, '@app', $params );
     my $result_set = $self->send() or return;
     my $result = $result_set->get_result($req_id);
     if ( $result->is_error ) {

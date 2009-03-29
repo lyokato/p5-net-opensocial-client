@@ -7,7 +7,6 @@ use LWP::UserAgent;
 has 'formatter' => (
     is       => 'ro',
     required => 1,
-
     # does => 'Net::OpenSocial::Client::Formatter',
 );
 
