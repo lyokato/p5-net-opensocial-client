@@ -2,7 +2,7 @@ package Net::OpenSocial::Client::Protocol::Builder;
 
 use Any::Moose;
 
-use Net::OpenSocial::Client::HTTPRequestBuilder::HMAC;
+use Net::OpenSocial::Client::HTTPRequestBuilder::OAuth;
 use Net::OpenSocial::Client::HTTPRequestBuilder::ST;
 
 use Net::OpenSocial::Client::Protocol::REST;
@@ -10,11 +10,8 @@ use Net::OpenSocial::Client::Protocol::RPC;
 
 use Net::OpenSocial::Client::Formatter::JSON;
 
-#use Net::OpenSocial::Client::Formatter::XML;
-#use Net::OpenSocial::Client::Formatter::Atom;
-
 use Net::OpenSocial::Client::Type::Protocol qw(REST RPC);
-use Net::OpenSocial::Client::Type::Auth qw(HMAC ST);
+use Net::OpenSocial::Client::Type::Auth qw(OAUTH ST);
 use Net::OpenSocial::Client::Type::Format qw(JSON XML ATOM);
 
 with 'Net::OpenSocial::Client::ErrorHandler';
@@ -28,7 +25,7 @@ has 'protocol_type' => (
 has 'auth_type' => (
     is      => 'ro',
     isa     => 'Str',
-    default => HMAC,
+    default => OAUTH,
 );
 
 has 'format_type' => (
@@ -110,9 +107,9 @@ sub _build_formatter {
 
 sub _build_request_builder {
     my $self = shift;
-    if ( $self->auth_type eq HMAC ) {
+    if ( $self->auth_type eq OAUTH ) {
         return $self->ERROR(
-            q{When you set HMAC as auth_type, you should set both 'consumer_key' and 'consumer_secret'.}
+            q{When you set OAUTH as auth_type, you should set both 'consumer_key' and 'consumer_secret'.}
             )
             unless ( defined $self->consumer_key
             && defined $self->consumer_secret );
@@ -126,7 +123,7 @@ sub _build_request_builder {
         elsif ( $self->requestor ) {
             $args{requestor} = $self->requestor;
         }
-        return Net::OpenSocial::Client::HTTPRequestBuilder::HMAC->new(%args);
+        return Net::OpenSocial::Client::HTTPRequestBuilder::OAuth->new(%args);
     }
     elsif ( $self->auth_type eq ST ) {
         return $self->ERROR(

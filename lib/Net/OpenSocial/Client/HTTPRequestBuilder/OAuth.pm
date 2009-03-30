@@ -1,4 +1,4 @@
-package Net::OpenSocial::Client::HTTPRequestBuilder::HMAC;
+package Net::OpenSocial::Client::HTTPRequestBuilder::OAuth;
 
 use Any::Moose;
 with 'Net::OpenSocial::Client::HTTPRequestBuilder';
@@ -49,7 +49,6 @@ sub build_request {
     my $consumer = OAuth::Lite::Consumer->new(
         consumer_key    => $self->consumer_key,
         consumer_secret => $self->consumer_secret,
-        auth_method     => URL_QUERY,
     );
     my $query = $consumer->gen_auth_query( $method, $url, $token, $params );
     $url = sprintf q{%s?%s}, $url, $query;

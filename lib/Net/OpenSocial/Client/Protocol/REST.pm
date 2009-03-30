@@ -12,6 +12,9 @@ use Net::OpenSocial::Client::Collection;
 override 'execute' => sub {
     my ( $self, $container, $requests ) = @_;
 
+    return $self->ERROR(q{This container doesn't support rest endpoint.})
+        unless $container->rest_endpoint;
+
     my $result = Net::OpenSocial::Client::ResultSet->new;
     for my $request (@$requests) {
 
@@ -23,9 +26,9 @@ override 'execute' => sub {
         my $url = join(
             '/',
             grep { defined($_) && $_ ne '' } (
-                $container->endpoint, $container->rest,
-                $request->service,    $request->user_id,
-                $request->group_id,   $app_id,
+                $container->rest_endpoint, $request->service,
+                $request->user_id,         $request->group_id,
+                $app_id,
             )
         );
 

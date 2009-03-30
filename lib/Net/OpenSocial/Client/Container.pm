@@ -2,20 +2,20 @@ package Net::OpenSocial::Client::Container;
 
 use Any::Moose;
 
-has 'endpoint' => (
-    is       => 'ro',
-    isa      => 'Str',
-    required => 1,
-);
-
-has 'rest' => (
+has 'rest_endpoint' => (
     is  => 'ro',
     isa => 'Str',
 );
 
-has 'rpc' => (
+has 'rpc_endpoint' => (
     is  => 'ro',
     isa => 'Str',
+);
+
+has 'use_request_body_hash' => (
+    is      => 'ro',
+    isa     => 'Bool',
+    default => 0,
 );
 
 no Any::Moose;

@@ -13,7 +13,9 @@ use Net::OpenSocial::Client::Type::Operation qw(CREATE UPDATE);
 override 'execute' => sub {
     my ( $self, $container, $requests ) = @_;
 
-    my $url = sprintf( q{%s/%s}, $container->endpoint, $container->rpc );
+    my $url = $container->rpc_endpoint;
+    return $self->ERROR(q{This container doesn't support RPC endpoint.})
+        unless $url;
     my $method = 'POST';
 
     my @obj;

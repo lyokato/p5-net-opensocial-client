@@ -1,4 +1,4 @@
-package Net::OpenSocial::Client::DebugAgent;
+package Net::OpenSocial::Client::Agent::Dump;
 
 use Any::Moose;
 
