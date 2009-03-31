@@ -24,11 +24,58 @@ __PACKAGE__->meta->make_immutable;
 
 =head1 NAME
 
-Net::OpenSocial::Client::Container - Container Information
+Net::OpenSocial::Client::Container - Container configuration
 
 =head1 SYNOPSIS
 
+    my $container = Net::OpenSocial::Client::Container->new(
+        rest_endpoint         => q{http://example.org/rest},
+        rpc_endpoint          => q{http://example.org/rpc},
+        use_request_body_hash => 1,
+    );
+
 =head1 DESCRIPTION
+
+Container confguration and provides some methods to support container specific implementation.
+
+=head1 USAGE
+
+=head2 BUILD BY YOURSELF
+
+    my $container = Net::OpenSocial::Client::Container->new(
+        rest_endpoint         => q{http://example.org/rest},
+        rpc_endpoint          => q{http://example.org/rpc},
+        use_request_body_hash => 1,
+    );
+
+=head2 USE SUBCLASS
+
+There already exist some major container classes.
+See L<Net::OpenSocial::Client::Container::Orkut>,
+L<Net::OpenSocial::Client::Container::MySpace>,
+L<Net::OpenSocial::Client::Container::Google>,
+L<Net::OpenSocial::Client::Container::FriendConnect>
+
+    my $container = Net::OpenSocial::Client::Container::Orkut->new;
+
+or if you need new class for another container.
+You should make new class extending this.
+
+
+=head1 METHODS
+
+=head2 rest_endpoint
+
+RESTful API endpoint URL of container.
+
+=head2 rpc_endpoint
+
+RPC endpoint URL of container.
+
+=head2 use_request_body_hash
+
+if container use OAuth Request Body Hash extension or not.
+Set 0 by default.
 
 =head1 AUTHOR
 
