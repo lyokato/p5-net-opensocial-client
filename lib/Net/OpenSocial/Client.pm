@@ -10,6 +10,7 @@ use Net::OpenSocial::Client::Request::FetchFriends;
 use Net::OpenSocial::Client::Request::FetchPersonAppData;
 use Net::OpenSocial::Client::Request::FetchFriendsAppData;
 
+our $VERSION = q{0.01};
 our @DEFAULT_PROTOCOL_VERSION = q{0.8.1};
 
 with 'Net::OpenSocial::Client::ErrorHandler';
@@ -33,6 +34,80 @@ has '_requests' => (
     provides  => { clear => 'clear_requests', },
 );
 
+=head1 NAME
+
+Net::OpenSocial::Client - OpenSocial REST/RPC Client
+
+=head1 SYNOPSIS
+
+=head1 DESCRIPTION
+
+OpenSocial provides API endpoints which called 'RESTful API' and 'RPC'.
+This module allows you to handle it easily.
+This provides you a same interface for both REST-API and RPC, so you
+don't need to mind about the big differences between them.
+
+=head1 CONTAINERS
+
+=head1 AUTHORIZATION
+
+=head1 SIMPLE USAGE
+
+If you don't need to handle multiple requests at once for more effective performance (batch request),
+this module provides you some simple methods that can handle resources easily.
+
+    my $client = Net::OpenSocial::Client->new(...);
+
+    my $user_id = '@me';
+    my $person = $client->get_person( $user_id )
+        or die $client->errstr;
+
+    say $person->get_field('id');
+
+    my $friends = $client->get_friends( $user_id )
+        or die $client->errstr;
+
+    foreach my $friend ( @{ $friends->items } ) {
+        say $friend->get_field('id');
+    }
+
+
+For more details, look at each methods' document.
+
+=over 4
+
+=item get_people
+=item get_person
+=item get_friends
+=item get_person_appdata
+=item get_friends_appdata
+
+=back
+
+=head1 RAW APIs AND BATCH REQUEST
+
+=head1 METHODS
+
+=head2 new
+
+    use Net::OpenSocial::Client::Type::Auth qw(OAUTH ST);
+    use Net::OpenSocial::Client::Type::Format qw(JSON XML);
+    use Net::OpenSocial::Client::Type::Protocol qw(REST RPC);
+
+    my $client = Net::OpenSocial::Client->new(
+        container     => $container,
+        auty_type     => OAUTH,
+        format_type   => JSON,
+        protocol_type => REST,
+    );
+
+=head2 BUILDARGS
+
+See L<Moose>, L<Mouse>.
+You don't need to call this method directly.
+
+=cut
+
 sub BUILDARGS {
     my ( $self, %args ) = @_;
     my $params = {};
@@ -46,11 +121,41 @@ sub BUILDARGS {
     return $params;
 }
 
+=head2 add_request( $request )
+
+Pass L<Net::OpenSocial::Client::Request> or its subclass's object.
+At this time, noghing happens. When you execute 'send' method,
+You will get the result of this request.
+
+You should make ID string for the request arbitrarily,
+and set it with the request.
+Remember this ID to pick up a result you want from result-set
+that you get after executing 'send' method.
+
+    $client->add_request( $request_id => $request );
+
+=cut
+
 sub add_request {
     my ( $self, $id, $req ) = @_;
     $req->id($id);
     push( @{ $self->_requests }, $req );
 }
+
+=head2 send()
+
+This method send all requests that you added by 'add_request' before you call this.
+If it's done successfuly, it returns a L<Net::OpenSocial::Client::ResultSet> object.
+
+To obtain a result you want, you need to invoke 'get_result' method of result-set object
+with request-id you set when you do 'add_request'.
+Then it returns a L<Net::OpenSocial::Client::Result> object.
+
+    my $result_set = $client->send()
+        or die $client->errstr;
+    my $result = $result_set->get_result($request_id);
+
+=cut
 
 sub send {
     my $self     = shift;
@@ -61,6 +166,12 @@ sub send {
     return $result_set;
 }
 
+=head2 get_people( $user_id, $group_id, $option )
+
+    my $people = $client->get_people( '@me', '@friends', { itemsPerPage => 10 } );
+
+=cut
+
 sub get_people {
     my ( $self, $user_id, $group_id, $params ) = @_;
     $self->clear_requests();
@@ -70,11 +181,13 @@ sub get_people {
     $self->add_request( $req_id => $req );
     my $result_set = $self->send() or return;
     my $result = $result_set->get_result($req_id);
-    if ( $result->is_error ) {
-        return $self->ERROR( $result->message );
-    }
+    return $self->ERROR( $result->message ) if $result->is_error;
     return $result->data;
 }
+
+=head2 get_person( $user_id )
+
+=cut
 
 sub get_person {
     my ( $self, $user_id ) = @_;
@@ -84,11 +197,13 @@ sub get_person {
     $self->add_request( $req_id => $req );
     my $result_set = $self->send() or return;
     my $result = $result_set->get_result($req_id);
-    if ( $result->is_error ) {
-        return $self->ERROR( $result->message );
-    }
+    return $self->ERROR( $result->message ) if $result->is_error;
     return $result->data;
 }
+
+=head2 get_friends( $user_id, $option )
+
+=cut
 
 sub get_friends {
     my ( $self, $user_id, $params ) = @_;
@@ -99,11 +214,13 @@ sub get_friends {
     $self->add_request( $req_id => $req );
     my $result_set = $self->send() or return;
     my $result = $result_set->get_result($req_id);
-    if ( $result->is_error ) {
-        return $self->ERROR( $result->message );
-    }
+    return $self->ERROR( $result->message ) if $result->is_error;
     return $result->data;
 }
+
+=head2 get_person_appdata( $user_id, $option )
+
+=cut
 
 sub get_person_appdata {
     my ( $self, $user_id, $params ) = @_;
@@ -115,11 +232,13 @@ sub get_person_appdata {
     $self->add_request( $req_id => $req );
     my $result_set = $self->send() or return;
     my $result = $result_set->get_result($req_id);
-    if ( $result->is_error ) {
-        return $self->ERROR( $result->message );
-    }
+    return $self->ERROR( $result->message ) if $result->is_error;
     return $result->data;
 }
+
+=head2 get_friends_appdata( $user_id, $option )
+
+=cut
 
 sub get_friends_appdata {
     my ( $self, $user_id, $params ) = @_;
@@ -129,55 +248,33 @@ sub get_friends_appdata {
         $user_id, '@app', $params );
     my $result_set = $self->send() or return;
     my $result = $result_set->get_result($req_id);
-    if ( $result->is_error ) {
-        return $self->ERROR( $result->message );
-    }
+    return $self->ERROR( $result->message ) if $result->is_error;
     return $result->data;
 }
+
+=head1 SEE ALSO
+
+L<http://code.google.com/apis/opensocial/docs/>,
+L<http://www.opensocial.org/Technical-Resources/opensocial-spec-v081/restful-protocol>,
+L<http://www.opensocial.org/Technical-Resources/opensocial-spec-v081/rpc-protocol>,
+L<http://code.google.com/apis/friendconnect/opensocial_rest_rpc.html>
+L<http://blog.opensocial.org/2008/12/opensocial-now-friends-with-php-java.html>
+
+=head1 AUTHOR
+
+Lyo Kato, E<lt>lyo.kato@gmail.comE<gt>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2009 by Lyo Kato
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.8.8 or,
+at your option, any later version of Perl 5 you may have available.
+
+=cut
 
 no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 1;
-
-=head1 SYNOPSIS
-
-
-    my $container = Net::OpenSocial::Client::Container->new(
-        endpoint => q{},
-        rest     => q{},
-        rpc      => q{},
-    );
-
-    my $client = Net::OpenSocial::Client->new(
-        container       => $container,
-        auth_type       => HMAC,
-        consumer_key    => '',
-        consumer_secret => '',
-        protocol_type   => RPC,
-    );
-
-    my $req1 = Net::OpenSocial::Client::Request->new(
-        service   => PEOPLE,
-        operation => GET,
-        user_id   => '@me',
-        group_id  => '@self',
-    );
-
-    $client->add_request( req_id_1 => $req1 );
-    $client->add_request( req_id_2 => $req2 );
-
-    my $result_set = $client->send();
-    my $res1 = $result_set->get_result('req_id_1');
-
-    if ( $res1->is_error ) {
-        $res1->code;
-        $res1->message;
-    } else {
-        my $collection = $res1->data;
-        for my $person ( @{ $collection->items } ) {
-            say $person->name;
-        }
-    }
-
-=cut
 

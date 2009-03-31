@@ -27,9 +27,11 @@ sub build_request {
     $params->{st} = $self->st;
     $uri->query_form(%$params);
     my $http_req = HTTP::Request->new( $method => $uri->as_string );
-    $http_req->header( 'Content-Type'   => $content_type );
-    $http_req->header( 'Content-Length' => bytes::length($content) );
-    $http_req->content($content);
+    if ( $method eq 'POST' || $method eq 'PUT' ) {
+        $http_req->header( 'Content-Type'   => $content_type );
+        $http_req->header( 'Content-Length' => bytes::length($content) );
+        $http_req->content($content);
+    }
     return $http_req;
 }
 
