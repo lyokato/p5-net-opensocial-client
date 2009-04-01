@@ -35,9 +35,10 @@ override 'execute' => sub {
         $params{format} = $self->formatter->name;
 
         my %build_args = (
-            method => $method,
-            url    => $url,
-            params => {%params},
+            method    => $method,
+            url       => $url,
+            params    => {%params},
+            container => $container,
         );
 
         if ( $method eq 'POST' || $method eq 'PUT' ) {

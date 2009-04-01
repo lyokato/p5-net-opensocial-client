@@ -21,6 +21,7 @@ sub build_request {
     my $params       = $args{parmas};
     my $content_type = $args{content_type};
     my $content      = $args{content};
+    my $container    = $args{container};
 
     my $uri = URI->new($url);
     $params ||= {};

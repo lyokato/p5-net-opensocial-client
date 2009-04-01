@@ -10,14 +10,15 @@ use Net::OpenSocial::Client::Request::FetchFriends;
 use Net::OpenSocial::Client::Request::FetchPersonAppData;
 use Net::OpenSocial::Client::Request::FetchFriendsAppData;
 
-our $VERSION = q{0.01};
+our $VERSION                  = q{0.01};
 our @DEFAULT_PROTOCOL_VERSION = q{0.8.1};
 
 with 'Net::OpenSocial::Client::ErrorHandler';
 
 has 'protocol' => (
-    is  => 'ro',
-    isa => 'Net::OpenSocial::Client::Protocol',
+    is       => 'ro',
+    isa      => 'Net::OpenSocial::Client::Protocol',
+    required => 1,
 );
 
 has 'container' => (

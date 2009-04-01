@@ -42,6 +42,19 @@ Net::OpenSocial::Client::Collection - Collection of resources
 
 =head1 SYNOPSIS
 
+    my $collection = Net::OpenSocial::Client::Collection->new;
+    $collection->items_per_page(10);
+    $collection->total_results(35);
+    $collection->start_index(0);
+
+    $collection->add_item( $resource1 );
+    $collection->add_item( $resource2 );
+    ...
+
+    for my $item ( @{ $collection->items } ) {
+
+    }
+
 =head1 DESCRIPTION
 
 Collection of resources.

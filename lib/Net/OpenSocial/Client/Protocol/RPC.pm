@@ -32,10 +32,8 @@ override 'execute' => sub {
         if (   $operation eq CREATE
             || $operation eq UPDATE )
         {
-
             unless ( $request->has_resource ) {
-
-                #ERROR
+                return $self->ERROR(q{CREATE/UPDATE operations need resource.});
             }
             my $resource = $request->resource;
             $obj->{params}{$service} = $resource->fields;
@@ -48,6 +46,7 @@ override 'execute' => sub {
     my $http_req = $self->request_builder->build_request(
         method       => $method,
         url          => $url,
+        container    => $container,
         content_type => $self->formatter->content_type,
         content      => $content,
     );

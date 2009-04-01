@@ -72,7 +72,11 @@ Hash reference that represents fields of resource.
 
 =head2 get_field( $key )
 
+    my $value = $resource->get_field('id');
+
 =head2 set_field( $key => $value )
+
+    $resource->get_field('id' => $resource_id);
 
 =head1 SEE ALSO
 
