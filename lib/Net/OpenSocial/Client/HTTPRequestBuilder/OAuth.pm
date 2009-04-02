@@ -49,6 +49,7 @@ sub build_request {
 
     my $use_request_body_hash = $container->use_request_body_hash ? 1 : 0;
 
+    # now OAuth::Lite 1.16 supports Request Body Hash
     my $consumer = OAuth::Lite::Consumer->new(
         consumer_key          => $self->consumer_key,
         consumer_secret       => $self->consumer_secret,

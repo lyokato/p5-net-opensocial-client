@@ -2,6 +2,21 @@ package Net::OpenSocial::Client::Container;
 
 use Any::Moose;
 
+has 'request_token_path' => (
+    is  => 'ro',
+    isa => 'Str',
+);
+
+has 'authorize_path' => (
+    is  => 'ro',
+    isa => 'Str',
+);
+
+has 'access_token_path' => (
+    is  => 'ro',
+    isa => 'Str',
+);
+
 has 'rest_endpoint' => (
     is  => 'ro',
     isa => 'Str',
@@ -63,6 +78,18 @@ You should make new class extending this.
 
 
 =head1 METHODS
+
+=head2 request_token_path
+
+OAuth request-token endpoint
+
+=head2 authorize_path
+
+OAuth authorization endpoint
+
+=head2 access_token_path
+
+OAuth access-token endpoint
 
 =head2 rest_endpoint
 

@@ -8,11 +8,12 @@ all_from 'lib/Net/OpenSocial/Client.pm';
 
 requires(
     'Any::Moose'               => '0.06',
-    'OAuth::Lite'              => '1.14',
+    'OAuth::Lite'              => '1.16',
     'HTTP::Request'            => 0,
     'JSON'                     => '2.14',
     'Mouse'                    => 0,
     'MouseX::AttributeHelpers' => 0,
+    'Data::Dump'               => 0,
 );
 
 tests('t/*.t t/*/*.t');
