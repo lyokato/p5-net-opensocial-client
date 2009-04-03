@@ -44,6 +44,14 @@ __PACKAGE__->meta->make_immutable;
 
 Net::OpenSocial::Client::HTTPRequestBuilder::ST - Security token request builder
 
+=head1 SYNOPSIS
+
+    my $builder = Net::OpenSocial::Client::HTTPRequestBuilder::ST->new(
+        st => q{securitytokenvalue},
+    );
+
+    my $http_req = $builder->build_request(...);
+
 =head1 DESCRIPTION
 
 HTTP Request builder with security-token authentication

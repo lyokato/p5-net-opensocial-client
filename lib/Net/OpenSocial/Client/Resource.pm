@@ -22,8 +22,10 @@ has 'fields' => (
     default   => sub { +{} },
     metaclass => 'Collection::Hash',
     provides  => {
-        get => 'get_field',
-        set => 'set_field',
+        'get'    => 'get_field',
+        'set'    => 'set_field',
+        'exists' => 'has_field',
+        'keys'   => 'field_names',
     },
 );
 
@@ -76,7 +78,17 @@ Hash reference that represents fields of resource.
 
 =head2 set_field( $key => $value )
 
-    $resource->get_field('id' => $resource_id);
+    $resource->set_field('id' => $resource_id);
+
+=head2 has_field( $key )
+
+    if ( $resource->has_field('name') ) {
+        say $resource->get_field('name');
+    }
+
+=head2 field_names
+
+    my @names = $resource->field_names();
 
 =head1 SEE ALSO
 

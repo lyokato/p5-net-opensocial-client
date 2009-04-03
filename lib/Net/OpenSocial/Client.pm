@@ -10,7 +10,7 @@ use Net::OpenSocial::Client::Request::FetchFriends;
 use Net::OpenSocial::Client::Request::FetchPersonAppData;
 use Net::OpenSocial::Client::Request::FetchFriendsAppData;
 
-our $VERSION                  = q{0.01};
+our $VERSION                  = q{0.01_01};
 our @DEFAULT_PROTOCOL_VERSION = q{0.8.1};
 
 with 'Net::OpenSocial::Client::ErrorHandler';
@@ -101,6 +101,63 @@ For more details, look at each methods' document.
         format_type   => JSON,
         protocol_type => REST,
     );
+
+=head3 container
+
+L<Net::OpenSocial::Client::Container> or its subcless object.
+
+=head3 auth_type
+
+Authorization type.
+You can choose from OAUTH and ST.
+OAUTH means 2-legged or 3-legged OAuth.
+When you choose OAUTH type, you have to pass both 'consumer_key' and 'consumer_secret'
+parameter which you got on provider beforehand.
+
+    my $client = Net::OpenSocial::Client->new(
+        auth_type       => OAUTH,  # you can omit this. OAUTH is set by default.
+        consumer_key    => q{foobarbuz},
+        consumer_secret => q{foobarbuz},
+        ...
+    );
+
+And if you want to use 3-legged OAuth, you need to pass authorized access-token.
+You should already have completed OAuth authorization process.
+See L<OAuth::Lite::Consumer>.
+
+    my $access_token = OAuth::Lite::Token->new( token => q{aaa}, secret => {bbb} );
+
+    my $client = Net::OpenSocial::Client->new(
+        auth_type       => OAUTH,  # you can omit this. OAUTH is set by default.
+        consumer_key    => q{foobarbuz},
+        consumer_secret => q{foobarbuz},
+        token           => $access_token,
+        ...
+    );
+
+Or in case you try 2-legged OAuth.
+pass user-id of xoauth_request_id as 'requestor' parameter.
+
+    my $client = Net::OpenSocial::Client->new(
+        auth_type       => OAUTH,  # you can omit this. OAUTH is set by default.
+        consumer_key    => q{foobarbuz},
+        consumer_secret => q{foobarbuz},
+        requestor       => q{myid},
+        ...
+    );
+
+ST means security-token.
+You have to security-token as 'st' parameter.
+
+    my $client = Net::OpenSocial::Client->new(
+        auth_type => ST,
+        st        => q{foobarbuz},
+        ...
+    );
+
+=head3 format_type
+
+=head3 protocol_type
 
 =head2 BUILDARGS
 
@@ -252,6 +309,11 @@ sub get_friends_appdata {
     return $self->ERROR( $result->message ) if $result->is_error;
     return $result->data;
 }
+
+=head1 DEVELOPMENT
+
+I'm woking on github.
+http://github.com/lyokato/p5-net-opensocial-client/tree/master
 
 =head1 SEE ALSO
 
