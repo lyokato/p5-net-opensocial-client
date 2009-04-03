@@ -93,7 +93,7 @@ sub _build_formatter {
         return Net::OpenSocial::Client::Formatter::JSON->new;
     }
 
-    # XXX: not support yet
+    # XXX: not supported yet
     #elsif ( $self->format_type eq XML ) {
     #    return Net::OpenSocial::Client::Formatter::XML->new;
     #}
@@ -139,3 +139,38 @@ no Any::Moose;
 __PACKAGE__->meta->make_immutable;
 1;
 
+=head1 NAME
+
+Net::OpenSocial::Client::Protocol::Builder - Protocol builder
+
+=head1 SYNOPSIS
+
+    my $builder = Net::OpenSocial::Client::Protocol::Builder->new();
+    my $protocol = $builder->build_protocol();
+
+=head1 DESCRIPTION
+
+Protocol builder.
+
+=head1 build_protocol
+
+=head1 SEE ALSO
+
+L<Net::OpenSocial::Client>
+L<Net::OpenSocial::Client::Protocol>
+L<Net::OpenSocial::Client::Protocol::REST>
+L<Net::OpenSocial::Client::Protocol::RPC>
+
+=head1 AUTHOR
+
+Lyo Kato, E<lt>lyo.kato@gmail.comE<gt>
+
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (C) 2009 by Lyo Kato
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.8.8 or,
+at your option, any later version of Perl 5 you may have available.
+
+=cut

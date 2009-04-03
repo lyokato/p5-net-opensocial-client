@@ -48,10 +48,6 @@ This module allows you to handle it easily.
 This provides you a same interface for both REST-API and RPC, so you
 don't need to mind about the big differences between them.
 
-=head1 CONTAINERS
-
-=head1 AUTHORIZATION
-
 =head1 SIMPLE USAGE
 
 If you don't need to handle multiple requests at once for more effective performance (batch request),
@@ -87,6 +83,69 @@ For more details, look at each methods' document.
 
 =head1 RAW APIs AND BATCH REQUEST
 
+=head2 BUILD REQUEST
+
+You can build a request object by yourself or choose from subset.
+See L<Net::OpenSocial::Client::Request>.
+
+    my $request = Net::OpenSocial::Client::Request->new(
+        service   => PEOPLE,
+        operation => GET,
+        user_id   => '@me',
+        group_id  => '@friends',
+        params    => {
+            itemsPerPage => 10,
+            startIndex   => 10,
+        },
+    );
+
+or
+
+    my $request = Net::OpenSocial::Client::Request::FetchFriends->new( '@me',
+        { itemsPerPage => 10, startIndex => 10 } );
+
+=head2 EXECUTE REQUEST
+
+You should add request to client with request-id.
+
+    $client->add_request( req1 => $request1 );
+    $client->add_request( req2 => $request2 );
+
+Only execute 'add_request', you can't obtain a result corresponding to the requests.
+To get them, you have to call 'send'.
+
+    my $result_set = $client->send()
+
+Internally, it works apropriately according to the protocol type you choosed.
+If RPC is selected, multiple requests are send as one single http-request.
+Or with REST, it send multiple http-request for each opensocial-request.
+And it returns L<Net::OpenSocial::Client::ResultSet> object.
+
+=head2 PICK UP RESULT
+
+Pick up L<Net::OpenSocial::Client::Result> object with
+request-id you passed when invoking 'add_request'.
+
+    my $result1 = $result_set->get_result('req1');
+    my $result2 = $result_set->get_result('req2');
+
+=head2 HANDLE DATA
+
+    if ( $result1->is_error ) {
+        die sprintf q{%d: %s.},
+            $result->code, $result->message;
+    } else {
+        my $data = $result1->data;
+        ...
+    }
+
+the data may be L<Net::OpenSocial::Client::Collection> or
+L<Net::OpenSocial::Client::Resource> subclass's object.
+such like L<Net::OpenSocial::Client::Resource::Person>
+,L<Net::OpenSocial::Client::Resource::Activity>
+,L<Net::OpenSocial::Client::Resource::AppData>
+, or L<Net::OpenSocial::Client::Resource::Group>.
+
 =head1 METHODS
 
 =head2 new
@@ -104,7 +163,23 @@ For more details, look at each methods' document.
 
 =head3 container
 
-L<Net::OpenSocial::Client::Container> or its subcless object.
+First, you have to prepare L<Net::OpenSocial::Client::Container> object.
+You can build it with container-information you want to access as of now,
+or choose from subset.
+There exists container objects which support major provider.
+
+L<Net::OpenSocial::Client::Container::Orkut>
+L<Net::OpenSocial::Client::Container::MySpace>
+L<Net::OpenSocial::Client::Container::Google>
+and etc.
+
+
+    my $container = Net::OpenSocial::Client::Container->new(...);
+
+or
+
+    my $container = Net::OpenSocial::Client::Container::MySpace->new;
+
 
 =head3 auth_type
 
@@ -147,7 +222,7 @@ pass user-id of xoauth_request_id as 'requestor' parameter.
     );
 
 ST means security-token.
-You have to security-token as 'st' parameter.
+You have pass to security-token as 'st' parameter.
 
     my $client = Net::OpenSocial::Client->new(
         auth_type => ST,
@@ -157,7 +232,17 @@ You have to security-token as 'st' parameter.
 
 =head3 format_type
 
+Now it only supports JSON format, so, it sets JSON by default.
+
 =head3 protocol_type
+
+REST or RPC.
+REST is set by default.
+Make sure that the container which you want to access supports
+the protocol.
+
+If container supports RPC, and you choose it, you can execute
+batch request.
 
 =head2 BUILDARGS
 

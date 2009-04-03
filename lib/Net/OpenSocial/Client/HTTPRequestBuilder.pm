@@ -15,7 +15,7 @@ Net::OpenSocial::Client::HTTPRequestBuilder - HTTP request builder role
     package MyBuilder;
     use Any::Moose;
     with 'Net::OpenSocial::Client::HTTPRequestBuilder';
-    
+
     sub build_request {
         ...
     }

@@ -16,7 +16,7 @@ requires qw(encode decode);
 
 1;
 
-=head1 NAME 
+=head1 NAME
 
 Net::OpenSocial::Client::Formatter - Formatter role
 
