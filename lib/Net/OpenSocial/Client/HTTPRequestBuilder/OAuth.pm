@@ -68,19 +68,6 @@ sub build_request {
         $oauth_args{headers} = [ 'Content-Type' => $content_type ];
     }
     my $http_req = $consumer->gen_oauth_request(%oauth_args);
-=pod
-    my $query = $consumer->gen_auth_query( $method, $url, $token, $params );
-    $url = sprintf q{%s?%s}, $url, $query;
-
-    my $headers = HTTP::Headers->new;
-    if ( $method eq 'POST' || $method eq 'PUT' ) {
-        $headers->header( 'Content-Type'   => $content_type );
-        $headers->header( 'Content-Length' => bytes::length($content) );
-    }
-
-    my $http_req = HTTP::Request->new( $method, $url, $headers, $content );
-
-=cut
     return $http_req;
 }
 
@@ -95,7 +82,7 @@ Net::OpenSocial::Client::HTTPRequestBuilder::OAuth - OAuth request builder
 =head1 SYNOPSIS
 
     # 3legged
-    # get access token before hand.
+    # get access token beforehand.
     my $builder = Net::OpenSocial::Client::HTTPRequestBuilder::OAuth->new(
         consumer_key    => $consumer_key,
         consumer_secret => $consumer_secret,

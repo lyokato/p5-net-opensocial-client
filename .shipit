@@ -1,4 +1,3 @@
-# auto-generated shipit config file.
-steps = FindVersion, ChangeVersion, CheckChangeLog, DistTest, MakeDist, UploadCPAN
-
-# CheckChangeLog.files = ChangeLog, MyProj.CHANGES
+steps = FindVersion, ChangeVersion, CheckChangeLog, DistTest, Commit, Tag, MakeDist, UploadCPAN
+git.tagpattern = release-%v
+git.push_to = origin

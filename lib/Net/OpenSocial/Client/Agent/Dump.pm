@@ -37,6 +37,7 @@ Net::OpenSocial::Client::Agent::Dump - Agent for debug
 
 For debug, this agent dump HTTP::Request and HTTP::Response object
 around requesting.
+Decorator of LWP::UserAgent.
 
 =head1 request
 

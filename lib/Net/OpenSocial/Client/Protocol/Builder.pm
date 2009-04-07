@@ -152,7 +152,9 @@ Net::OpenSocial::Client::Protocol::Builder - Protocol builder
 
 Protocol builder.
 
-=head1 build_protocol
+=head1 METHODS
+
+=head2 build_protocol
 
 =head1 SEE ALSO
 

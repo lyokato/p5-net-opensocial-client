@@ -85,7 +85,7 @@ For more details, look at each methods' document.
 
 =head2 BUILD REQUEST
 
-You can build a request object by yourself or choose from subset.
+You can build a request object by yourself or choose from preset.
 See L<Net::OpenSocial::Client::Request>.
 
     my $request = Net::OpenSocial::Client::Request->new(
@@ -116,7 +116,7 @@ To get them, you have to call 'send'.
 
     my $result_set = $client->send()
 
-Internally, it works apropriately according to the protocol type you choosed.
+Internally, it works apropriately according to the protocol type you choose.
 If RPC is selected, multiple requests are send as one single http-request.
 Or with REST, it send multiple http-request for each opensocial-request.
 And it returns L<Net::OpenSocial::Client::ResultSet> object.
@@ -165,7 +165,7 @@ such like L<Net::OpenSocial::Client::Resource::Person>
 
 First, you have to prepare L<Net::OpenSocial::Client::Container> object.
 You can build it with container-information you want to access as of now,
-or choose from subset.
+or choose from preset.
 There exists container objects which support major provider.
 
 L<Net::OpenSocial::Client::Container::Orkut>
