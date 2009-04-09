@@ -37,6 +37,12 @@ Request to fetch person which has a simple constructor.
 You only have to do is pass a user-id or selector.
 This is a subclass of L<Net::OpenSocial::Client::Request>.
 
+=head1 METHODS
+
+=head2 BUILDARGS
+
+See L<Moose>, L<Mouse>
+
 =head1 SEE ALSO
 
 L<Net::OpenSocial::Client::Request>

@@ -19,7 +19,7 @@ override 'execute' => sub {
     my $method = 'POST';
 
     my @obj;
-    my %id_service_map = ();
+    my %id_req_map = ();
     for my $request (@$requests) {
         my $service   = $request->rpc_service;
         my $operation = $request->operation;
@@ -39,7 +39,7 @@ override 'execute' => sub {
             $obj->{params}{$service} = $resource->fields;
         }
         push( @obj, $obj );
-        $id_service_map{ $request->id } = $service;
+        $id_req_map{ $request->id } = $request;
     }
     my $content = $self->formatter->encode( @obj > 1 ? [@obj] : $obj[0] );
 
@@ -73,15 +73,15 @@ override 'execute' => sub {
     for my $result (@$results) {
         my $res_id
             = exists $result->{id} ? $result->{id} : $requests->[0]->id;
-        my $service = $id_service_map{$res_id};
+        my $origin_req = $id_req_map{$res_id};
         $result_set->set_result(
-            $res_id => $self->_build_result( $service, $result ) );
+            $res_id => $self->_build_result( $origin_req->service, $origin_req->operation, $result ) );
     }
     return $result_set;
 };
 
 sub _build_result {
-    my ( $self, $service, $obj ) = @_;
+    my ( $self, $service, $operation, $obj ) = @_;
     $obj ||= {};
     if ( exists $obj->{error} ) {
         return Net::OpenSocial::Client::Result->new(
@@ -93,8 +93,7 @@ sub _build_result {
 
         #my $result = exists $obj->{result} ? $obj->{result} : $obj;
         my $result = $obj->{data} || {};
-        #if ( ( $operation eq CREATE || $operation eq UPDATE ) && scalar( keys %$result ) == 0 ) {
-        if ( scalar( keys %$result ) == 0 ) {
+        if ( ( $operation eq CREATE || $operation eq UPDATE ) && scalar( keys %$result ) == 0 ) {
 
             # VOID result
             return Net::OpenSocial::Client::Result->new();
@@ -119,7 +118,7 @@ sub _build_result {
                     $coll->add_item($resource);
                 }
             }
-            else {
+            elsif ( keys %$result > 0 ) {
                 my $resource = Net::OpenSocial::Client::Resource::Factory
                     ->gen_resource( $service, $result );
                 $coll->add_item($resource);

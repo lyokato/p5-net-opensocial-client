@@ -16,7 +16,7 @@ my $client = Net::OpenSocial::Client->new(
     consumer_key    => q{orkut.com:623061448914},
     consumer_secret => q{uynAeXiWTisflWX99KU1D2q5},
     requestor       => q{03067092798963641994},
-    #protocol_type  => RPC,
+    protocol_type  => RPC,
     #auth_type      => ST,
 );
 

@@ -341,7 +341,7 @@ sub get_person {
     my $result_set = $self->send() or return;
     my $result = $result_set->get_result($req_id);
     return $self->ERROR( $result->message ) if $result->is_error;
-    return $result->data;
+    return $result->data->first;
 }
 
 =head2 get_friends( $user_id, $option )
@@ -370,13 +370,12 @@ sub get_person_appdata {
     $self->clear_requests();
     my $req_id = 'get_person_appdata';
     my $req
-        = Net::OpenSocial::Client::Request::FetchPersonAppData->new( $user_id,
-        '@app', $params );
+        = Net::OpenSocial::Client::Request::FetchPersonAppData->new( $user_id, $params );
     $self->add_request( $req_id => $req );
     my $result_set = $self->send() or return;
     my $result = $result_set->get_result($req_id);
     return $self->ERROR( $result->message ) if $result->is_error;
-    return $result->data;
+    return $result->data->first;
 }
 
 =head2 get_friends_appdata( $user_id, $option )
@@ -388,7 +387,8 @@ sub get_friends_appdata {
     $self->clear_requests();
     my $req_id = 'get_friens_appdata';
     my $req    = Net::OpenSocial::Client::Request::FetchFriendsAppData->new(
-        $user_id, '@app', $params );
+        $user_id, $params );
+    $self->add_request( $req_id => $req );
     my $result_set = $self->send() or return;
     my $result = $result_set->get_result($req_id);
     return $self->ERROR( $result->message ) if $result->is_error;

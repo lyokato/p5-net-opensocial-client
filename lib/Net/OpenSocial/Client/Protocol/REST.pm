@@ -85,6 +85,7 @@ sub _build_result {
         $coll->items_per_page( $result->{itemsPerPage} )
             if exists $result->{itemsPerPage};
         for my $entry (@$entries) {
+            next unless ( keys %$entry > 0 );
             my $resource
                 = Net::OpenSocial::Client::Resource::Factory->gen_resource(
                 $service, $entry );

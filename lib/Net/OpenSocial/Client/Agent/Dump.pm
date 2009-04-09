@@ -39,7 +39,9 @@ For debug, this agent dump HTTP::Request and HTTP::Response object
 around requesting.
 Decorator of LWP::UserAgent.
 
-=head1 request
+=head1 METHODS
+
+=head2 request
 
 Interface same as LWP::UserAgent
 
