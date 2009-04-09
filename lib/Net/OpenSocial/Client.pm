@@ -41,6 +41,29 @@ Net::OpenSocial::Client - OpenSocial REST/RPC Client
 
 =head1 SYNOPSIS
 
+
+    use Net::OpenSocial::Client;
+    use Net::OpenSocial::Client::Container::OrkutSandbox;
+    use Net::OpenSocial::Client::Type::Protocol qw(REST RPC);
+    use Data::Dump qw(dump);
+
+    my $client = Net::OpenSocial::Client->new(
+        container       => Net::OpenSocial::Client::Container::OrkutSandbox->new, 
+        consumer_key    => q{orkut.com:623061448914},
+        consumer_secret => q{uynAeXiWTisflWX99KU1D2q5},
+        requestor       => q{03067092798963641994},
+        protocol_type   => RPC,
+    );
+
+    my $friends = $client->get_friends('@me')
+        or die $client->errstr;
+    for my $person ( @{ $friends->items } ) {
+        say $person->get_field('id');
+        ...
+
+        say dump($person->fields);
+    }
+
 =head1 DESCRIPTION
 
 OpenSocial provides API endpoints which called 'RESTful API' and 'RPC'.
@@ -312,6 +335,10 @@ sub send {
 =head2 get_people( $user_id, $group_id, $option )
 
     my $people = $client->get_people( '@me', '@friends', { itemsPerPage => 10 } );
+    say $people->count;
+    for my $person ( @{ $people->items } ) {
+        say $person->get_field('id');
+    }
 
 =cut
 
@@ -330,6 +357,9 @@ sub get_people {
 
 =head2 get_person( $user_id )
 
+    my $person = $client->get_person('@me');
+    say $person->get_field('id');
+
 =cut
 
 sub get_person {
@@ -345,6 +375,12 @@ sub get_person {
 }
 
 =head2 get_friends( $user_id, $option )
+
+    my $people = $client->get_people( '@me', { itemsPerPage => 10 } );
+    say $people->count;
+    for my $person ( @{ $people->items } ) {
+        say $person->get_field('id');
+    }
 
 =cut
 
@@ -363,6 +399,12 @@ sub get_friends {
 
 =head2 get_person_appdata( $user_id, $option )
 
+returns L<Net::OpenSocial::Client::Resource::AppData>.
+
+    my $appdata = $client->get_person_appdata('@me')
+        or die $client->errstr;
+    say $appdata->get_data($user_id, $key);
+
 =cut
 
 sub get_person_appdata {
@@ -379,6 +421,12 @@ sub get_person_appdata {
 }
 
 =head2 get_friends_appdata( $user_id, $option )
+
+    my $collection = $client->get_friends_appdata('@me')
+        or die $client->errstr;
+    for my $appdata ( @{ $collection->items } ) {
+        ...
+    }
 
 =cut
 
