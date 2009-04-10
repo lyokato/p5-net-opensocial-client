@@ -14,7 +14,7 @@ use constant ST    => 1;
 
 =head1 NAME
 
-Net::OpenSocial::Client::Type::Auth - Constans for auth-type
+Net::OpenSocial::Client::Type::Auth - Constants for auth-type
 
 =head1 SYNOPSIS
 

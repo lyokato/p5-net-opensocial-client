@@ -16,7 +16,7 @@ use constant APPDATA  => 'appdata';
 
 =head1 NAME
 
-Net::OpenSocial::Client::Type::Service - Constans for service-type
+Net::OpenSocial::Client::Type::Service - Constants for service-type
 
 =head1 SYNOPSIS
 

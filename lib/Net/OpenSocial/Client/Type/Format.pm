@@ -15,7 +15,7 @@ use constant ATOM => 2;
 
 =head1 NAME
 
-Net::OpenSocial::Client::Type::Format - Constans for format-type
+Net::OpenSocial::Client::Type::Format - Constants for format-type
 
 =head1 SYNOPSIS
 

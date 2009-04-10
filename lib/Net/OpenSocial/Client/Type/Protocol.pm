@@ -14,7 +14,7 @@ use constant RPC  => 1;
 
 =head1 NAME
 
-Net::OpenSocial::Client::Type::Protocol - Constans for protocol-type
+Net::OpenSocial::Client::Type::Protocol - Constants for protocol-type
 
 =head1 SYNOPSIS
 

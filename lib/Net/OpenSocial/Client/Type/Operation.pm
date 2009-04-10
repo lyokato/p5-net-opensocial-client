@@ -16,7 +16,7 @@ use constant DELETE => 'delete';
 
 =head1 NAME
 
-Net::OpenSocial::Client::Type::Operation - Constans for operation-type
+Net::OpenSocial::Client::Type::Operation - Constants for operation-type
 
 =head1 SYNOPSIS
 
