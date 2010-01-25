@@ -11,9 +11,9 @@ sub BUILDARGS {
     return {
         service   => PEOPLE,
         operation => GET,
-        user_id   => $user_id || '@me',
+        user_id   => $user_id  || '@me',
         group_id  => $group_id || '@self',
-        params    => $params || {},
+        params    => $params   || {},
     };
 }
 

@@ -1,5 +1,9 @@
 Revision history for Perl extension Net::OpenSocial::Client.
 
+0.01_02  Mon Jan 25 11:30:00 2010
+    Bugfix for incompatibility between Moose and Mouse.
+    Thanks to Hu Hailin
+
 0.01_01  Fri Apr 03 11:53:00 2009
     Developer release.
 

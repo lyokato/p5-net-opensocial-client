@@ -40,9 +40,9 @@ has 'params' => (
 );
 
 has 'resource' => (
-    is      => 'rw',
-    isa     => 'Net::OpenSocial::Client::Resource',
-    predict => 'has_resource',
+    is        => 'rw',
+    isa       => 'Net::OpenSocial::Client::Resource',
+    predicate => 'has_resource',
 );
 
 my %OP_METHOD_MAP = (

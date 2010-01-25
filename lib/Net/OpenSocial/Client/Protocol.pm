@@ -7,14 +7,13 @@ use LWP::UserAgent;
 has 'formatter' => (
     is       => 'ro',
     required => 1,
-    # does => 'Net::OpenSocial::Client::Formatter',
+    does => 'Net::OpenSocial::Client::Formatter',
 );
 
 has 'request_builder' => (
     is       => 'ro',
     required => 1,
-
-    # does => 'Net::OpenSocial::Client::HTTPRequestBuilder',
+    does => 'Net::OpenSocial::Client::HTTPRequestBuilder',
 );
 
 has 'agent' => (

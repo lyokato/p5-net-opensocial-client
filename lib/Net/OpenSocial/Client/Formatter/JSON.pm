@@ -3,17 +3,13 @@ package Net::OpenSocial::Client::Formatter::JSON;
 use Any::Moose;
 with 'Net::OpenSocial::Client::Formatter';
 
-use JSON;
+use JSON ();
 
 has '+name' => (
-    is      => 'ro',
-    isa     => 'Str',
     default => q{json},
 );
 
 has '+content_type' => (
-    is      => 'ro',
-    isa     => 'Str',
     default => q{application/json},
 );
 

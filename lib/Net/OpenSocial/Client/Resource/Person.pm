@@ -6,8 +6,6 @@ extends 'Net::OpenSocial::Client::Resource';
 use Net::OpenSocial::Client::Type::Service qw(PEOPLE);
 
 has '+service' => (
-    is      => 'ro',
-    isa     => 'Str',
     default => PEOPLE,
 );
 
