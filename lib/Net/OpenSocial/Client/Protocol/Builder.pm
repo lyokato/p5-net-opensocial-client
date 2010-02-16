@@ -2,6 +2,8 @@ package Net::OpenSocial::Client::Protocol::Builder;
 
 use Any::Moose;
 
+use OAuth::Lite::Token;
+
 use Net::OpenSocial::Client::HTTPRequestBuilder::OAuth;
 use Net::OpenSocial::Client::HTTPRequestBuilder::ST;
 
@@ -46,7 +48,7 @@ has 'consumer_secret' => (
 
 has 'token' => (
     is  => 'ro',
-    isa => 'Str',
+    isa => 'OAuth::Lite::Token',
 );
 
 has 'requestor' => (

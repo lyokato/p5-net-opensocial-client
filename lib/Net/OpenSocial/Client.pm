@@ -10,7 +10,7 @@ use Net::OpenSocial::Client::Request::FetchFriends;
 use Net::OpenSocial::Client::Request::FetchPersonAppData;
 use Net::OpenSocial::Client::Request::FetchFriendsAppData;
 
-our $VERSION                  = '0.01_02';
+our $VERSION                  = '0.01_03';
 our $DEFAULT_PROTOCOL_VERSION = '0.8.1';
 
 with 'Net::OpenSocial::Client::ErrorHandler';

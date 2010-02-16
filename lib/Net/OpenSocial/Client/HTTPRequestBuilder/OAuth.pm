@@ -24,7 +24,7 @@ has 'consumer_key' => (
 
 has 'token' => (
     is  => 'ro',
-    isa => 'OAut::Lite::Token',
+    isa => 'OAuth::Lite::Token',
 );
 
 has 'requestor' => (
