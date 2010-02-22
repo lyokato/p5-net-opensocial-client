@@ -1,5 +1,9 @@
 Revision history for Perl extension Net::OpenSocial::Client.
 
+0.01_04  Mon Feb 22 14:22:00 2010
+    added Container::MySpace09.
+    Thanks to Eugene A.Lukianov
+
 0.01_03  Tue Feb 16 10:27:00 2010
     Fixed some typos.
     Thanks to Eugene A.Lukianov

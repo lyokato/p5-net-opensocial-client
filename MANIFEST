@@ -19,6 +19,7 @@ lib/Net/OpenSocial/Client/Container.pm
 lib/Net/OpenSocial/Client/Container/FriendConnect.pm
 lib/Net/OpenSocial/Client/Container/Google.pm
 lib/Net/OpenSocial/Client/Container/MySpace.pm
+lib/Net/OpenSocial/Client/Container/MySpace09.pm
 lib/Net/OpenSocial/Client/Container/Orkut.pm
 lib/Net/OpenSocial/Client/Container/OrkutSandbox.pm
 lib/Net/OpenSocial/Client/Container/Partuza.pm
@@ -57,11 +58,11 @@ Makefile.PL
 MANIFEST
 META.yml
 README
-xt/online/orkutsandbox_rest_appdata.t
-xt/online/orkutsandbox_rest_people.t
-xt/online/orkutsandbox_rpc_appdata.t
-xt/online/orkutsandbox_rpc_people.t
 t/00_load_all.t
 xt/01_pod.t
 xt/02_podcoverage.t
 xt/03_podspell.t
+xt/online/orkutsandbox_rest_appdata.t
+xt/online/orkutsandbox_rest_people.t
+xt/online/orkutsandbox_rpc_appdata.t
+xt/online/orkutsandbox_rpc_people.t
