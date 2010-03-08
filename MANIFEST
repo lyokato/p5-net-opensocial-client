@@ -47,6 +47,8 @@ lib/Net/OpenSocial/Client/Resource/AppData.pm
 lib/Net/OpenSocial/Client/Resource/Factory.pm
 lib/Net/OpenSocial/Client/Resource/Group.pm
 lib/Net/OpenSocial/Client/Resource/Person.pm
+lib/Net/OpenSocial/Client/Resource/Album.pm
+lib/Net/OpenSocial/Client/Resource/MediaItem.pm
 lib/Net/OpenSocial/Client/Result.pm
 lib/Net/OpenSocial/Client/ResultSet.pm
 lib/Net/OpenSocial/Client/Type/Auth.pm
