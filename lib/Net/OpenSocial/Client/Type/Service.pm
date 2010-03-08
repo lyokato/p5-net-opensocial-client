@@ -5,12 +5,14 @@ use warnings;
 
 use base 'Exporter';
 
-our @EXPORT_OK = qw(PEOPLE GROUP ACTIVITY APPDATA);
+our @EXPORT_OK = qw(PEOPLE GROUP ACTIVITY APPDATA ALBUM MEDIAITEM);
 
-use constant PEOPLE   => 'people';
-use constant GROUP    => 'groups';
-use constant ACTIVITY => 'activities';
-use constant APPDATA  => 'appdata';
+use constant PEOPLE    => 'people';
+use constant GROUP     => 'groups';
+use constant ACTIVITY  => 'activities';
+use constant APPDATA   => 'appdata';
+use constant ALBUM     => 'albums';
+use constant MEDIAITEM => 'mediaitems';
 
 1;
 
@@ -20,11 +22,13 @@ Net::OpenSocial::Client::Type::Service - Constants for service-type
 
 =head1 SYNOPSIS
 
-    use Net::OpenSocial::Client::Type::Service qw(PEOPLE GROUP ACTIVITY APPDATA);
+    use Net::OpenSocial::Client::Type::Service qw(PEOPLE GROUP ACTIVITY APPDATA ALBUM MEDIAITEM);
     say PEOPLE;
     say GROUP;
     say ACTIVITY;
     say APPDATA;
+    say ALBUM;
+    say MEDIAITEM;
 
 =head1 DESCRIPTION
 
@@ -42,11 +46,16 @@ Constants for service-type
 
 =item APPDATA
 
+=item ALBUM
+
+=item MEDIAITEM
+
 =back
 
 =head1 AUTHOR
 
-Lyo Kato, E<lt>lyo.kato@gmail.comE<gt>
+Lyo Kato, E<lt>lyo.kato@gmail.comE<gt>, OpenSocial 0.9 "album" and "mediaItem" 
+services added by Eugene A.Lukianov, E<lt>eugene.spa@gmail.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
 
